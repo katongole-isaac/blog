@@ -13,7 +13,7 @@ export default function BlogCard({ className, size = "sm", ...props }: CardProps
       >
         <div className={cn("min-h-48 relative border-r border-gray-50")}>
           <Image
-            src="/images/default_image.png"
+            src="/images/default.png"
             alt="default_image"
             layout="fill"
             objectFit="cover"
