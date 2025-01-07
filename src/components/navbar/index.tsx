@@ -36,7 +36,9 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`border-b border-gray-300 py-2  ${openMobileMenu ? "bg-[#FAFAFC]" : "bg-gray-100/60"}  sticky w-screen  top-0 z-50`}>
+      <nav
+        className={`border-b border-gray-300 py-2  ${openMobileMenu ? "bg-[#FAFAFC]" : "bg-gray-100/60 backdrop-blur filter"}  sticky  top-0 z-50`}
+      >
         <div className=" max-w-screen-lg m-auto flex justify-between ">
           {/* logo */}
           <div className="">navbar</div>
