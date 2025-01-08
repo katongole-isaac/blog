@@ -1,42 +1,29 @@
-"use client";
+import matter from "gray-matter";
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
-import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { X } from "lucide-react";
+const file = `---
+title: Hello
+slug: home
+Socials:
+    x: u
+    facebook: 0
 
+Hobbies:
+    - swimming
+    - Football
+---
+<h1>Hello world!</h1>
+`;
+
+// const readBlog = async () => {
+//   const filePath = path.join(__dirname, "../blogs", "demo.md");
+//   const res =  await fs.readFile(filePath);
+//   console.log("Markdown: ", res);
+// }
 export default function Test() {
-  const [openModal, setOpenModal] = useState(true);
-  const ref = useRef<HTMLDivElement>(null);
-
-  const handleClickOutside = (e: MouseEvent) => {
-    if (ref.current && ref.current.contains(e.target as Node) && openModal) return;
-    setOpenModal(false);
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  return (
-    <>
-      <section className="fixed z-[1000] w-screen bg-gray-50/60 h-screen filter backdrop-blur">
-        <div className="max-w-screen-md m-auto py-4 px-5 md:px-10 lg:px-5 h-full flex flex-col justify-center ">
-          <div
-            role="button"
-            className=" absolute right-10 top-10 rounded-full w-10 h-10 p-2 bg-gray-200 cursor-pointer flex items-center justify-center"
-          >
-            <X size={25} className="text-neutral-500 hover:text-neutral-600 transition-all" />
-          </div>
-
-          <div ref={ref} className="relative bg-white w-full h-60  md:h-96 lg:h-[26rem]">
-            <Image src="/images/default.png" alt="default.png" fill objectFit="contain" />
-          </div>
-        </div>
-      </section>
-    </>
-  );
+  // readBlog();
+  const res = matter(file);
+  console.log(res);
+  return <></>;
 }

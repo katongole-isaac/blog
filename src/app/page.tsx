@@ -15,7 +15,12 @@ export default function Home() {
 
   return (
     <>
-      {/* <Test /> */}
+      <Navbar />
+      <Test />
+    </>
+  );
+  return (
+    <>
       <AnimatePresence>
         {imagePreviewModal && <BlogImagePreview onClose={() => setImagePreviewModal(false)} open={imagePreviewModal} />}
       </AnimatePresence>
