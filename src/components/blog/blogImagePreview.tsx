@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
+import { useAppContext } from "@/context/appContext";
+import { DEFAULT_IMAGE } from "@/utils/constants";
 
 interface Props {
-  url?: string;
   onClose: () => void;
-  open: boolean;
 }
 
 // for motion [animations]
@@ -19,18 +19,20 @@ const variants = {
   },
 };
 
-const DEFAULT_IMAGE_PATH = "/images/default.png";
-
-const BlogImagePreview: React.FC<Props> = ({ url, open, onClose }) => {
-  const imageURL = url?.trim() ? url : DEFAULT_IMAGE_PATH;
+const BlogImagePreview: React.FC<Props> = ({ onClose }) => {
+  const { imagePreviewOpen, imagePreviewURL } = useAppContext();
+  const imageURL = imagePreviewURL?.trim() ? imagePreviewURL : DEFAULT_IMAGE;
 
   const ref = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (e: MouseEvent) => {
-    if (ref.current && ref.current.contains(e.target as Node) && open) return;
+    if (ref.current && ref.current.contains(e.target as Node) && imagePreviewOpen) return;
     onClose();
   };
 
+  const closeOnEsc = (e: KeyboardEvent) => {
+    if (e.key.toLowerCase() === "escape" && imagePreviewOpen) handleModalClose();
+  };
   const handleModalClose = () => onClose();
 
   useEffect(() => {
@@ -40,6 +42,14 @@ const BlogImagePreview: React.FC<Props> = ({ url, open, onClose }) => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", closeOnEsc);
+
+    return () => {
+      document.removeEventListener("keydown", closeOnEsc);
+    };
+  }, [imagePreviewOpen]);
 
   return (
     <motion.section
@@ -59,7 +69,7 @@ const BlogImagePreview: React.FC<Props> = ({ url, open, onClose }) => {
           <X size={25} className="text-neutral-500 hover:text-neutral-600 transition-all" />
         </div>
 
-        <div ref={ref} className="relative bg-white w-full h-60  md:h-96 lg:h-[26rem]">
+        <div ref={ref} className="relative bg-transparent w-full h-60  md:h-96 lg:h-[26rem]">
           <Image src={imageURL} alt="default.png" fill objectFit="contain" />
         </div>
       </div>

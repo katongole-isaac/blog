@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import {  } from 'next/font/google'
 
 import "./globals.css";
 
@@ -12,7 +13,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        <body>
+        <body className="font-apple">
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
           </ThemeProvider>

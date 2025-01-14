@@ -11,8 +11,6 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
 export default function Home() {
-  const [imagePreviewModal, setImagePreviewModal] = useState(false);
-
   return (
     <>
       <Navbar />
@@ -21,9 +19,6 @@ export default function Home() {
   );
   return (
     <>
-      <AnimatePresence>
-        {imagePreviewModal && <BlogImagePreview onClose={() => setImagePreviewModal(false)} open={imagePreviewModal} />}
-      </AnimatePresence>
       <Navbar />
       <main className="">
         {/* blog cotainer list */}
@@ -31,11 +26,6 @@ export default function Home() {
         </section> */}
 
         <section className="max-w-screen-md m-auto py-10">
-          <BlogHeader />
-          <BlogImage url="" onOpenPreview={() => setImagePreviewModal(true)} />
-          <BlogContent />
-          <BlogContent />
-          <BlogContent />
           <div className="px-10 md:px-14">
             <SocialMediaLinks />
           </div>

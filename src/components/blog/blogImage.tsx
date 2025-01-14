@@ -3,12 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-
-interface Props {
-  caption?: string;
-  url: string;
-  onOpenPreview?: () => void;
-}
+import { useAppContext } from "@/context/appContext";
 
 const variants: Variants = {
   offscreen: {
@@ -25,25 +20,26 @@ const variants: Variants = {
   },
 };
 
-const BlogImage: React.FC<Props> = ({ onOpenPreview }) => {
+const BlogImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({ src, alt, height, width, ...props }) => {
+  const { handleImagePreview } = useAppContext();
+
   return (
     <>
-      <section className="pt-2 pb-6 px-6 lg:px-0 space-y-2 transition-all">
-        <motion.div
+      <span className="pt-2 inline-flex flex-col w-full justify-center items-center pb-6 px-6 lg:px-0 space-y-2 transition-all">
+        <motion.span
           variants={variants}
           initial="offscreen"
           whileInView="onscreen"
           viewport={{ once: true }}
           role="button"
-          onClick={onOpenPreview}
-          className="relative border transition-all h-60 md:h-80 lg:h-96 lg:max-h-96 rounded-md overflow-hidden"
+          onClick={() => handleImagePreview(src!)}
+          className="relative inline-flex justify-center items-center border border-gray-100/40 transition-all w-full h-40  md:h-72 lg:h-90 lg:max-h-96 rounded-md overflow-hidden"
         >
-          <Image src="/images/default.png" alt="Default image" objectFit="contain" fill />
-        </motion.div>
-        <div className="">
-          <p className="text-neutral-500 text-center text-sm font-semibold">The new caption of this image is so cool, lol</p>
-        </div>
-      </section>
+          <Image src={src!} alt={alt!} height={height as number} width={width as number} fill quality={100} objectFit="contain" {...props} />
+        </motion.span>
+        {/* if you ever need caption */}
+        {/* <span className="text-neutral-500 inline-block text-center text-sm font-semibold">The new caption of this image is so cool, lol</span> */}
+      </span>
     </>
   );
 };
