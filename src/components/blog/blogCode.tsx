@@ -2,13 +2,12 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { Copy, Check } from "lucide-react";
 import { ClassAttributes, HTMLAttributes, useState, useEffect } from "react";
-import { ExtraProps } from "react-markdown";
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 const iconSize = 18;
 
-const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps> = (props) => {
+const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement>> = (props) => {
   const [isCopied, setIsCopied] = useState(false);
   const { children, className, ...rest } = props;
   const match = /language-(\w+)/.exec(className || "");

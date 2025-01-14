@@ -3,7 +3,6 @@
 import Navbar from "@/components/navbar";
 import Test from "./test";
 import BlogHeader from "@/components/blog/header";
-import BlogContent from "@/components/blog/content";
 import SocialMediaLinks from "@/components/blog/socials";
 import BlogImage from "@/components/blog/blogImage";
 import BlogImagePreview from "../components/blog/blogImagePreview";

@@ -32,7 +32,7 @@ const replace = (domNode: DOMNode) => {
       if (domNode.attribs["data-type"] === "inline")
         // for inline codepsan
         //@ts-ignore
-        return <code className="rounded-sm px-1 py-[1px] bg-gray-200/50 font-semibold text-neutral-600"> {domToReact(domNode.childNodes)} </code>;
+        return <code className="not-prose rounded-sm px-1 py-[1px] bg-gray-200/50 font-semibold text-neutral-600"> {domToReact(domNode.childNodes)} </code>;
 
       //@ts-ignore
       return <Code className={className}>{domToReact(domNode.children)}</Code>;
@@ -98,7 +98,7 @@ renderer.list = function (this, tokens) {
 
 renderer.blockquote = function (this, token) {
   return `<blockquote class="my-5">
-      <div class="border-l-4 bg-gray-100 py-1 border-blue-500 pl-7 pr-2 italic text-gray-700 dark:text-gray-200">${this.parser.parse(
+      <div class="border-l-4 bg-gray-100 py-1 border-blue-500/60 pl-7 pr-2 italic text-gray-700 dark:text-gray-200">${this.parser.parse(
         token.tokens
       )}</div>
     </blockquote>`;
