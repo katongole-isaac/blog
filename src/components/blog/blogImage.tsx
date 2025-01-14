@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useAppContext } from "@/context/appContext";
@@ -35,7 +35,7 @@ const BlogImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({ src, a
           onClick={() => handleImagePreview(src!)}
           className="relative inline-flex justify-center items-center border border-gray-100/40 transition-all w-full h-40  md:h-72 lg:h-90 lg:max-h-96 rounded-md overflow-hidden"
         >
-          <Image src={src!} alt={alt!} height={height as number} width={width as number} fill quality={100} objectFit="contain" {...props} />
+          <Image src={src!} alt={alt!} height={height as number} width={width as number} layout="fill" quality={100} objectFit="contain" {...props} />
         </motion.span>
         {/* if you ever need caption */}
         {/* <span className="text-neutral-500 inline-block text-center text-sm font-semibold">The new caption of this image is so cool, lol</span> */}

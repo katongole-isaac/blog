@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAppContext } from "@/context/appContext";
@@ -70,7 +70,7 @@ const BlogImagePreview: React.FC<Props> = ({ onClose }) => {
         </div>
 
         <div ref={ref} className="relative bg-transparent w-full h-60  md:h-96 lg:h-[26rem]">
-          <Image src={imageURL} alt="default.png" fill objectFit="contain" />
+          <Image src={imageURL} alt="default.png" layout="fill" objectFit="contain" />
         </div>
       </div>
     </motion.section>

@@ -34,8 +34,7 @@ const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> 
       timerId && clearTimeout(timerId);
     };
   }, [isCopied]);
-
-
+  
   if (!className)
     // for isline code snippets
     return (

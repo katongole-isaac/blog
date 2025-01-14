@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 type CardProps = React.ComponentProps<typeof Card> & { size?: "sm" | "lg" };
 
