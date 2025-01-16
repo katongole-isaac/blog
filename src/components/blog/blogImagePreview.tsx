@@ -58,18 +58,18 @@ const BlogImagePreview: React.FC<Props> = ({ onClose }) => {
       animate="visible"
       exit="hidden"
       layout
-      className="fixed z-[1000] w-screen bg-gray-50/60 h-screen filter backdrop-blur"
+      className="fixed z-[1000] w-screen bg-gray-50/60 dark:bg-black/50 h-screen filter backdrop-blur"
     >
       <div className="max-w-screen-md m-auto py-4 px-5 md:px-10 lg:px-5 h-full flex flex-col justify-center ">
         <div
           onClick={handleModalClose}
           role="button"
-          className=" absolute right-10 top-10 rounded-full w-10 h-10 p-2 bg-gray-200 cursor-pointer flex items-center justify-center"
+          className=" absolute right-10 top-10 rounded-full w-10 h-10 p-2 bg-gray-200 dark:bg-neutral-200 cursor-pointer flex items-center justify-center"
         >
-          <X size={25} className="text-neutral-500 hover:text-neutral-600 transition-all" />
+          <X size={25} className="text-neutral-500 hover:text-neutral-600  transition-all" />
         </div>
 
-        <div ref={ref} className="relative bg-transparent w-full h-60  md:h-96 lg:h-[26rem]">
+        <div ref={ref} className="relative bg-transparent w-full h-60 border dark:border-neutral-900  md:h-96 lg:h-[26rem]">
           <Image src={imageURL} alt="default.png" layout="fill" objectFit="contain" />
         </div>
       </div>

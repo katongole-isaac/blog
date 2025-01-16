@@ -24,6 +24,7 @@ const renderer = new Renderer();
  */
 
 const replace = (domNode: DOMNode) => {
+  const headings = ["h1", "h2", "h3", "h4", "h5", "h6"];
   if (domNode.type === "tag") {
     if (domNode.name === "code") {
       // Extract the class attribute
@@ -31,8 +32,15 @@ const replace = (domNode: DOMNode) => {
 
       if (domNode.attribs["data-type"] === "inline")
         // for inline codepsan
-        //@ts-ignore
-        return <code className="not-prose rounded-sm px-1 py-[1px] bg-gray-200/50 font-semibold text-neutral-600"> {domToReact(domNode.childNodes)} </code>;
+
+        return (
+          <code className="not-prose rounded-sm px-1 py-[3px] bg-gray-200/50 dark:bg-neutral-800 dark:text-gray-300  text-neutral-600 ">
+            {
+              //@ts-ignore
+              domToReact(domNode.childNodes)
+            }
+          </code>
+        );
 
       //@ts-ignore
       return <Code className={className}>{domToReact(domNode.children)}</Code>;
@@ -40,11 +48,11 @@ const replace = (domNode: DOMNode) => {
 
     if (domNode.name === "table")
       //@ts-ignore
-      return <table className="min-w-full border-collapse border border-gray-300 text-sm">{domToReact(domNode.children, { replace })}</table>;
+      return <table className="min-w-full border-collapse border border-gray-300 dark:border-neutral-800 dark:[&_*]:border-neutral-800  text-sm">{domToReact(domNode.children, { replace })}</table>;
 
     if (domNode.name === "th")
       //@ts-ignore
-      return <th className="border border-gray-300 bg-gray-100 px-4 py-2 text-left font-bold">{domToReact(domNode.children, { replace })}</th>;
+      return <th className="border border-gray-300 bg-gray-100 dark:bg-neutral-800 px-4 py-2 text-left font-bold">{domToReact(domNode.children, { replace })}</th>;
 
     if (domNode.name === "td")
       //@ts-ignore
@@ -56,10 +64,24 @@ const replace = (domNode: DOMNode) => {
       return <BlogImage src={src} alt={alt} />;
     }
 
+    //@ts-ignore
+    if (headings.find((heading) => heading === domNode.name)) return domToReact(domNode.children, { replace });
+
     if (domNode.name === "a") {
       const { href } = domNode.attribs || {};
+
+      if (domNode.attribs["data-type"] === "page-link")
+        // these are links with hash, not external links
+        return (
+          <Link href={href} className="hover:text-blue-500 hover:underline text-blue-400" scroll>
+            {
+              //@ts-ignore
+              domToReact(domNode.children)
+            }
+          </Link>
+        );
       return (
-        <Link href={href} className="hover:text-blue-500 hover:underline text-blue-400">
+        <Link href={href} className="hover:text-blue-500 hover:underline text-blue-400" scroll>
           {
             //@ts-ignore
             domToReact(domNode.children)
@@ -80,8 +102,14 @@ renderer.heading = ({ depth, text, type }) => {
     5: "text-lg  md:text-xl",
     6: "text-lg  md:text-xl",
   };
+  const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  // <a href=${id}  data-type="page-link" class="text-inherit">  ${text} <span class="hidden group-hover:inline" >#</span> </a>
 
-  return `<h${depth}  class="${formatting[depth as keyof typeof formatting]} mt-4 mb-2 " >${text} </h${depth}>`;
+  return `
+  <h${depth} id=${id} class="${formatting[depth as keyof typeof formatting]} mt-4 mb-2 group" >
+    ${text}
+  </h${depth}>
+  `;
 };
 
 renderer.list = function (this, tokens) {
@@ -98,7 +126,7 @@ renderer.list = function (this, tokens) {
 
 renderer.blockquote = function (this, token) {
   return `<blockquote class="my-5">
-      <div class="border-l-4 bg-gray-100 py-1 border-blue-500/60 pl-7 pr-2 italic text-gray-700 dark:text-gray-200">${this.parser.parse(
+      <div class="border-l-4 bg-gray-100 py-1 border-blue-500/60 dark:border-blue-400/60 pl-7 pr-2 italic text-gray-700 dark:text-gray-200 dark:bg-neutral-900">${this.parser.parse(
         token.tokens
       )}</div>
     </blockquote>`;
@@ -115,7 +143,7 @@ renderer.codespan = function (this, token) {
 renderer.paragraph = function (this, token) {
   return `<p class="mb-4 leading-6"> ${this.parser.parseInline(token.tokens)} </p>`;
 };
-renderer.hr = (token) => `<${token.type} class="my-12 border border-gray-200" />`;
+renderer.hr = (token) => `<${token.type} class="my-12 border border-gray-200 dark:border-neutral-800" />`;
 renderer.strong = ({ text, type }) => `<${type} class="font-semibold"> ${text} </${type}>`;
 
 marked.use({ renderer });

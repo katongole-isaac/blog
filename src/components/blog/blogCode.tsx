@@ -2,19 +2,24 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { Copy, Check } from "lucide-react";
 import { ClassAttributes, HTMLAttributes, useState, useEffect } from "react";
-import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneLight, oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { useTheme } from "next-themes";
 
 const iconSize = 18;
 
 const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement>> = (props) => {
+  const { theme, systemTheme } = useTheme();
   const [isCopied, setIsCopied] = useState(false);
   const { children, className, ...rest } = props;
   const match = /language-(\w+)/.exec(className || "");
 
   const defaultLangStyles = "bash";
 
-  let timerId: NodeJS.Timeout;
+  let codeTheme, timerId: NodeJS.Timeout;
+
+  if (theme === "system") codeTheme = systemTheme === "dark" ? oneDark : oneLight;
+  else codeTheme = theme === "dark" ? oneDark : oneLight;
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(String(props.children as string)).then(() => setIsCopied(true));
@@ -32,8 +37,14 @@ const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement>>
     <div className=" relative rounded-md my-2">
       <div className="sticky top-0 z-30 flex justify-end pr-3">
         <div className="absolute top-3 ">
-          <Button onClick={handleCopyToClipboard} size="icon" type="button" variant="outline" className={cn("p-0")}>
-            {!isCopied ? <Copy size={iconSize} className="text-gray-700" /> : <Check size={iconSize} className="text-gray-700" />}
+          <Button
+            onClick={handleCopyToClipboard}
+            size="icon"
+            type="button"
+            variant="outline"
+            className={cn("p-0 dark:bg-[#14171C]/50 text-gray-700  dark:text-gray-400")}
+          >
+            {!isCopied ? <Copy size={iconSize} /> : <Check size={iconSize} />}
           </Button>
         </div>
       </div>
@@ -47,7 +58,7 @@ const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement>>
               wrapLines
               children={String(children).replace(/\n$/, "")}
               language={match[1]}
-              style={oneLight}
+              style={codeTheme}
               wrapLongLines
             />
           }
@@ -62,7 +73,7 @@ const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement>>
               wrapLines
               children={String(children).replace(/\n$/, "")}
               language={defaultLangStyles}
-              style={oneLight}
+              style={codeTheme}
               wrapLongLines
             />
           }

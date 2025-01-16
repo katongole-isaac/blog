@@ -33,7 +33,7 @@ const BlogImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({ src, a
           viewport={{ once: true }}
           role="button"
           onClick={() => handleImagePreview(src!)}
-          className="relative inline-flex justify-center items-center border border-gray-100/40 transition-all w-full h-40  md:h-72 lg:h-90 lg:max-h-96 rounded-md overflow-hidden"
+          className="relative inline-flex justify-center items-center border border-gray-100/40 dark:border-neutral-900 transition-all w-full h-40  md:h-72 lg:h-90 lg:max-h-96 rounded-md overflow-hidden"
         >
           <Image src={src!} alt={alt!} height={height as number} width={width as number} layout="fill" quality={100} objectFit="contain" {...props} />
         </motion.span>

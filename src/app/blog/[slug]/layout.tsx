@@ -27,18 +27,16 @@ export default function BlogLayout({ children }: Props): React.JSX.Element {
   const closeImagePreview = () => {
     setTimeout(() => {
       setImagePreview((prev) => ({ ...prev, url: "" }));
-    }, 100);
+    }, 500);
     setImagePreview((prev) => ({ ...prev, open: false }));
   };
   return (
-    <div className="bg-gray-50/50">
+    <div className="bg-gray-50/50 dark:bg-black min-h-screen">
       <ReactQueryProvider>
         <AppContext.Provider value={{ imagePreviewOpen: imagePreview.open, handleImagePreview, imagePreviewURL: imagePreview.url }}>
           <AnimatePresence>{imagePreview.open && <BlogImagePreview onClose={closeImagePreview} />}</AnimatePresence>
           <Navbar />
-          <section className=" max-w-screen-md m-auto py-10 font-apple prose  prose-headings:font-medium prose-blockquote:border-0 prose-pre:bg-transparent prose-pre:p-0 prose-h1:mb-0">
-            <BlogHeader />
-
+          <section className=" max-w-screen-md m-auto py-10 font-apple prose dark:prose-invert  prose-headings:font-medium prose-blockquote:border-0 prose-pre:bg-transparent prose-pre:p-0 prose-h1:mb-0 prose-a:no-underline ">
             <section className="px-10 md:px-14">{children}</section>
           </section>
         </AppContext.Provider>

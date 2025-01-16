@@ -10,16 +10,16 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
 export default function Home() {
+  // return (
+  //   <>
+  //     <Navbar />
+  //     <Test />
+  //   </>
+  // );
   return (
     <>
       <Navbar />
-      <Test />
-    </>
-  );
-  return (
-    <>
-      <Navbar />
-      <main className="">
+      <main className="dark:bg-black">
         {/* blog cotainer list */}
         {/* <section className="max-w-screen-lg m-auto flex flex-col gap-10  items-center justify-center py-5 md:px-14 lg:px-16 md:py-10">
         </section> */}
@@ -28,6 +28,7 @@ export default function Home() {
           <div className="px-10 md:px-14">
             <SocialMediaLinks />
           </div>
+          <Test />
         </section>
       </main>
     </>

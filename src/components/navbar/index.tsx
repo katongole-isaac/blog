@@ -37,7 +37,9 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`border-b border-gray-300 py-2  ${openMobileMenu ? "bg-[#FAFAFC]" : "bg-gray-100/60 backdrop-blur filter"}  sticky  top-0 z-50`}
+        className={`border-b border-gray-300 dark:border-neutral-800 py-2  ${
+          openMobileMenu ? "bg-[#FAFAFC]" : "bg-gray-100/60 backdrop-blur filter"
+        }  dark:bg-neutral-900 sticky  top-0 z-50`}
       >
         <div className=" max-w-screen-lg m-auto flex justify-between ">
           {/* logo */}
@@ -66,8 +68,8 @@ export default function Navbar() {
       </nav>
       <div
         className={` fixed top-0 transition-all duration-500 delay-200 ease-in-out filter ${
-          openMobileMenu ? "h-screen w-screen  backdrop-blur-sm " : "h-max"
-        }  bg-white/40`}
+          openMobileMenu ? "h-screen w-screen z-40 backdrop-blur-sm " : "h-max"
+        }  bg-white/40 dark:bg-black/50`}
       />
     </>
   );

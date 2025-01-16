@@ -1,30 +1,37 @@
+import { BlogResponse } from "@/utils/types";
 import SocialMediaLinks from "./socials";
 
-export default function BlogHeader() {
+interface Props {
+  blog: BlogResponse;
+}
+const BlogHeader: React.FC<Props> = ({ blog }) => {
+  const {
+    lastModified,
+    matter: { data: metadata },
+  } = blog;
+
   return (
     <>
-      <section className="flex flex-col gap-6 px-10 md:px-14  pb-6 pt-2">
-        <div className="space-y-1 not-prose">
-          <p className="uppercase text-neutral-500 font-medium text-xs"> Press Release </p>
-          <p className="uppercase text-neutral-500 font-medium  text-xs"> {new Date().toDateString()} </p>
+      <section className="prose dark:prose-invert pb-6 pt-2">
+        <div className="flex flex-col gap-6">
+          <div className="space-y-1 not-prose">
+            <p className="uppercase text-neutral-500 dark:text-neutral-300 font-medium text-xs"> Press Release </p>
+            <p className="uppercase text-neutral-500 dark:text-neutral-300 font-medium text-xs"> {new Date().toDateString()} </p>
+          </div>
+
+          <h1 className="text-3xl md:text-4xl lg:text-5xl mt-4">{metadata.title}</h1>
         </div>
 
-        <div className="">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight lg:text-5xl">
-            Apple Music expands live global radio offering with three brand-new stations{" "}
-          </h1>
-        </div>
-
-        <div className="font-semibold text-lg mb-0">
-          <p>
-            The new Apple Música Uno, Apple Music Club, and Apple Music Chill live-hosted radio stations offer listeners more exclusive shows from
-            some of the world’s most vital artists, including Becky G, Rauw Alejandro, Grupo Frontera, Honey Dijon, Jamie xx, FKA twigs, Nia Archives,
-            Brian Eno, Stephan Moccio, and more
-          </p>
-        </div>
+        {metadata.description && (
+          <div className="font-semibold text-lg mb-0 py-2">
+            <p>{metadata.description}</p>
+          </div>
+        )}
 
         <SocialMediaLinks />
       </section>
     </>
   );
-}
+};
+
+export default BlogHeader;

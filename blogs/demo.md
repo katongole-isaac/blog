@@ -7,6 +7,8 @@ tags:
   - Programming
   - Career
   - Personal Growth
+description:  converted to HTML.  This demo page will let you type anything you like and see how it gets converted.  Live.  No more waiting around.  
+
 ---
 
 

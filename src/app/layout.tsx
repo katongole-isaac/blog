@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import {  } from 'next/font/google'
-
+import {} from "next/font/google";
+import  { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,6 +16,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <body className="font-apple">
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>
