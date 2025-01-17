@@ -5,6 +5,7 @@ import { ClassAttributes, HTMLAttributes, useState, useEffect } from "react";
 import { oneLight, oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { useTheme } from "next-themes";
+import { copyToClipboard } from "@/utils";
 
 const iconSize = 18;
 
@@ -22,7 +23,9 @@ const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement>>
   else codeTheme = theme === "dark" ? oneDark : oneLight;
 
   const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(String(props.children as string)).then(() => setIsCopied(true));
+    copyToClipboard(props.children as string, () => {
+      setIsCopied(true);
+    });
   };
 
   useEffect(() => {
@@ -36,7 +39,7 @@ const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement>>
   return (
     <div className=" relative rounded-md my-2">
       <div className="sticky top-0 z-30 flex justify-end pr-3">
-        <div className="absolute top-3 ">
+        <div className="absolute top-1 md:top-3 ">
           <Button
             onClick={handleCopyToClipboard}
             size="icon"

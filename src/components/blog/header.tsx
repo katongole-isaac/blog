@@ -12,7 +12,7 @@ const BlogHeader: React.FC<Props> = ({ blog }) => {
 
   return (
     <>
-      <section className="prose dark:prose-invert pb-6 pt-2">
+      <section className="prose dark:prose-invert pb-6 mt-5">
         <div className="flex flex-col gap-6">
           <div className="space-y-1 not-prose">
             <p className="uppercase text-neutral-500 dark:text-neutral-300 font-medium text-xs"> Press Release </p>
