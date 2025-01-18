@@ -36,7 +36,7 @@ const SocialMediaLinks = () => {
         >
           <FaXTwitter size={iconSize} />
         </Link>
-        <LinkIcon size={iconSize} onClick={() => handleCopyLink()} />
+        <LinkIcon className="text-white" size={iconSize} onClick={() => handleCopyLink()} />
       </div>
     </section>
   );

@@ -15,7 +15,6 @@ interface Props {
 
 const fetchBlogs: (blog: string) => () => Promise<BlogResponse> = (blog: string) => () =>
   fetch(config.getPost + "/" + blog).then((res) => res.json());
-// const fetchBlogs: () => Promise<{ results: BlogResponse[] }> = () => fetch(config.getPosts).then((res) => res.json());
 
 const BlogPage: React.FC<Props> = ({ params }) => {
   const { data, error, isLoading } = useQuery({ queryKey: ["blogs"], queryFn: fetchBlogs("demo") });

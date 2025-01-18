@@ -19,7 +19,7 @@ const BlogHeader: React.FC<Props> = ({ blog }) => {
             <p className="uppercase text-neutral-500 dark:text-neutral-300 font-medium text-xs"> {new Date().toDateString()} </p>
           </div>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl mt-4">{metadata.title}</h1>
+          <h1 className="text-3xl md:text-4xl text-center lg:text-5xl mt-4">{metadata.title}</h1>
         </div>
 
         {metadata.description && (

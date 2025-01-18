@@ -34,7 +34,7 @@ export default function BlogCard({ className, size = "sm", ...props }: CardProps
     );
 
   return (
-    <Card className={cn(" cursor-pointer group min-w-[320px] w-full relative overflow-hidden border-gray-50 shadow", className)} {...props}>
+    <Card className={cn(" cursor-pointer group min-w-[300px] w-full relative overflow-hidden border-gray-50 shadow", className)} {...props}>
       <div className={cn("min-h-48 relative border-b border-gray-50")}>
         <Image
           src="/images/default_image.png"

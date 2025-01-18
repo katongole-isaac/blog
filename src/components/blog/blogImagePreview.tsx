@@ -1,23 +1,13 @@
-import React, { useEffect, useRef } from "react";
 import Image from "next/legacy/image";
-import { X } from "lucide-react";
-import { motion } from "framer-motion";
-import { useAppContext } from "@/context/appContext";
+import React, { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
 import { DEFAULT_IMAGE } from "@/utils/constants";
+import { useAppContext } from "@/context/appContext";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface Props {
   onClose: () => void;
 }
-
-// for motion [animations]
-const variants = {
-  hidden: {
-    opacity: 0,
-  },
-  visible: {
-    opacity: 1,
-  },
-};
 
 const BlogImagePreview: React.FC<Props> = ({ onClose }) => {
   const { imagePreviewOpen, imagePreviewURL } = useAppContext();
@@ -52,28 +42,19 @@ const BlogImagePreview: React.FC<Props> = ({ onClose }) => {
   }, [imagePreviewOpen]);
 
   return (
-    <motion.section
-      variants={variants}
-      initial="hidden"
-      animate="visible"
-      exit="hidden"
-      layout
-      className="fixed z-[1000] w-screen bg-gray-50/60 dark:bg-black/50 h-screen filter backdrop-blur"
-    >
-      <div className="max-w-screen-md m-auto py-4 px-5 md:px-10 lg:px-5 h-full flex flex-col justify-center ">
-        <div
-          onClick={handleModalClose}
-          role="button"
-          className=" absolute right-10 top-10 rounded-full w-10 h-10 p-2 bg-gray-200 dark:bg-neutral-200 cursor-pointer flex items-center justify-center"
-        >
-          <X size={25} className="text-neutral-500 hover:text-neutral-600  transition-all" />
+    <Dialog open={imagePreviewOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Edit Profile</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-screen-md !bg-transparent border-none shadow-sm dark:shadow-none">
+        <DialogTitle></DialogTitle>
+        <div className="max-w-screen-lg w-full m-auto py-4 px-5 md:px-10 lg:px-5 h-full flex flex-col justify-center  ">
+          <div ref={ref} className="relative bg-transparent w-full h-60 border- dark:border-neutral-900  md:h-96 lg:h-[26rem]">
+            <Image src={imageURL} alt="default.png" layout="fill" objectFit="contain" />
+          </div>
         </div>
-
-        <div ref={ref} className="relative bg-transparent w-full h-60 border dark:border-neutral-900  md:h-96 lg:h-[26rem]">
-          <Image src={imageURL} alt="default.png" layout="fill" objectFit="contain" />
-        </div>
-      </div>
-    </motion.section>
+      </DialogContent>
+    </Dialog>
   );
 };
 
