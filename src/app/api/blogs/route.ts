@@ -23,6 +23,8 @@ export async function GET(req: Request) {
     const fileContents = fs.readFileSync(filePath);
 
     results.push({
+      fileName,
+      //@ts-ignore
       matter: matter(fileContents),
       createdAt: stats.birthtimeMs,
       lastModified: stats.mtimeMs,

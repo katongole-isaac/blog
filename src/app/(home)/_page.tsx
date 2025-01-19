@@ -20,14 +20,16 @@ export default function HomePage() {
         {isLoading && <BlogsLoading />}
         {data &&
           !isLoading &&
-          utils.displayOrderForBlogs(Array(20).fill(data.results[0])).map((blogArray, index) => {
+          utils.displayOrderForBlogs(data.results).map((blogArray, index) => {
             if (index === 0)
-              return blogArray.map((blog, idx) => <BlogCard key={blog.matter.data.title + idx.toString()} size="lg" className="flex-1" />);
+              return blogArray.map((blog, idx) => (
+                <BlogCard key={blog.matter.data.title + idx.toString()} blog={blog} size="lg" className="flex-1" />
+              ));
 
             return (
               <div key={index} className="flex flex-col md:flex-row gap-4">
                 {blogArray.map((blog, _idx) => (
-                  <BlogCard key={blog.matter.data.title + _idx.toString()} />
+                  <BlogCard key={blog.matter.data.title + _idx.toString()} blog={blog} />
                 ))}
               </div>
             );

@@ -10,7 +10,10 @@ import { BlogResponse } from "@/utils/types";
 export async function GET(req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  const filePath = path.join(process.cwd(), "blogs", `${slug}.md`);
+  const regexp = /\w+(\.md)$/; // ending in .md
+
+  const fileName = regexp.test(slug.trim()) ? slug.trim() : `${slug}.md`;
+  const filePath = path.join(process.cwd(), "blogs", fileName);
 
   if (!fs.existsSync(filePath)) {
     return NextResponse.json({ error: "Post not found" }, { status: 404 });
@@ -21,6 +24,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
   const stats = fs.statSync(filePath);
 
   const result: BlogResponse = {
+    fileName,
+    //@ts-ignore
     matter: matter(fileContents),
     createdAt: stats.birthtimeMs,
     lastModified: stats.mtimeMs,
