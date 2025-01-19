@@ -1,9 +1,9 @@
 import BlogCard from "@/components/blog/blogCard";
 import { useQuery } from "@tanstack/react-query";
 
+import utils from "@/utils";
 import config from "@/config/default.json";
-import { BlogResponse } from "@/utils/types";
-import { displayOrderForBlogs } from "@/utils";
+import { type BlogResponse } from "@/utils/types";
 
 export default function HomePage() {
   const fetchBlogs: () => Promise<{ results: BlogResponse[] }> = () => fetch(config.getPosts).then((res) => res.json());
@@ -17,7 +17,7 @@ export default function HomePage() {
       {/* blog cotainer list */}
       <section className="max-w-screen-lg m-auto flex flex-col gap-8  items-center justify-center px-5 py-5 md:px-10 lg:px-14 md:py-8">
         {data &&
-          displayOrderForBlogs(Array(20).fill(data.results[0])).map((blogArray, index) => {
+          utils.displayOrderForBlogs(Array(20).fill(data.results[0])).map((blogArray, index) => {
             if (index === 0)
               return blogArray.map((blog, idx) => <BlogCard key={blog.matter.data.title + idx.toString()} size="lg" className="flex-1" />);
 

@@ -1,11 +1,12 @@
-import { Button } from "../ui/button";
-import { cn } from "@/lib/utils";
 import { Copy, Check } from "lucide-react";
 import { ClassAttributes, HTMLAttributes, useState, useEffect } from "react";
 import { oneLight, oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { useTheme } from "next-themes";
-import { copyToClipboard } from "@/utils";
+
+import utils from "@/utils";
+import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 const iconSize = 18;
 
@@ -23,7 +24,7 @@ const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement>>
   else codeTheme = theme === "dark" ? oneDark : oneLight;
 
   const handleCopyToClipboard = () => {
-    copyToClipboard(props.children as string, () => {
+    utils.copyToClipboard(props.children as string, () => {
       setIsCopied(true);
     });
   };

@@ -1,16 +1,16 @@
 import Link from "next/link";
+import toast from "react-hot-toast";
 import { FaFacebook } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { Link as LinkIcon } from "lucide-react";
-import toast from "react-hot-toast";
-import { copyToClipboard } from "@/utils";
+
+import utils from "@/utils";
 
 const SocialMediaLinks = () => {
   const iconSize = 20;
-  // bottom-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4
-
+  
   const handleCopyLink = async () => {
-    copyToClipboard("Uganda", () => {
+    utils.copyToClipboard("Uganda", () => {
       toast.custom(<Toast />, { position: "bottom-right", id: "copy-link" });
     });
   };
@@ -36,7 +36,7 @@ const SocialMediaLinks = () => {
         >
           <FaXTwitter size={iconSize} />
         </Link>
-        <LinkIcon className="text-white" size={iconSize} onClick={() => handleCopyLink()} />
+        <LinkIcon className="dark:text-white text-black" size={iconSize} onClick={() => handleCopyLink()} />
       </div>
     </section>
   );

@@ -1,3 +1,58 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime"; // ES 2015
+import updateLocale from "dayjs/plugin/updateLocale"; // ES 2015
+import calendar from "dayjs/plugin/calendar"; // ES 2015
+
+/**
+ * Formats Time
+ * @param time - Time in milliseconds
+ * @returns Formatted string for the `time` passed
+ */
+const blogTimeFormat = (time: number) => {
+  const blogCreationTime = dayjs(time);
+
+  dayjs.extend(calendar);
+  dayjs.extend(updateLocale);
+  dayjs.extend(relativeTime);
+
+  dayjs.updateLocale("en", {
+    relativeTime: {
+      future: "in %s",
+      past: "%s ago",
+      s: "a few seconds",
+      m: "a minute",
+      mm: "%d minutes",
+      h: "an hour",
+      hh: "%d hours",
+      d: "a day",
+      dd: "%d days",
+      M: "a month",
+      MM: "%d months",
+      y: "a year",
+      yy: "%d years",
+    },
+    calendar: {
+      lastDay: "[Yesterday]",
+      sameDay: "[Today at] h:mm A",
+      lastWeek: "[Last] dddd [at] h:mm A",
+      sameElse: "MMMM D, YYYY",
+    },
+  });
+
+  // If the blog creation Time is lessthan 66 hours use
+  // relativeTime format otherwise use calender format
+
+  const hoursToSwitchDisplayDateFormats = 36;
+
+  const diffInHours = dayjs().diff(blogCreationTime, "hours");
+
+  // calendar format
+  if (diffInHours >= hoursToSwitchDisplayDateFormats) return dayjs(time).calendar(dayjs());
+
+  // use relativeTime
+  return dayjs(time).fromNow();
+};
+
 const fallbackCopyTextToClipboard = (text: string) => {
   const textarea = document.createElement("textarea");
   textarea.value = text;
@@ -22,7 +77,7 @@ const fallbackCopyTextToClipboard = (text: string) => {
  * @param cb - Callback to execute on success
  * @returns Void
  */
-export const copyToClipboard = async (text: string, cb?: () => void) => {
+const copyToClipboard = async (text: string, cb?: () => void) => {
   let success = true;
   try {
     if (navigator.clipboard && "writeText" in navigator.clipboard) await window.navigator.clipboard.writeText(text);
@@ -56,7 +111,7 @@ interface DisplayOptions {
  * Formats the display order for blog posts
  */
 
-export const displayOrderForBlogs = <T>(items: T[], options: DisplayOptions = {}) => {
+const displayOrderForBlogs = <T>(items: T[], options: DisplayOptions = {}) => {
   const { limit = items.length, doubleSubArrays = false, arrayUplimit: arrUplimit = 3 } = options;
 
   const results: T[][] = [];
@@ -124,4 +179,10 @@ export const displayOrderForBlogs = <T>(items: T[], options: DisplayOptions = {}
   }
 
   return results;
+};
+
+export default {
+  blogTimeFormat,
+  displayOrderForBlogs,
+  copyToClipboard,
 };
