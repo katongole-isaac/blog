@@ -13,7 +13,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        <body className="font-apple bg-gray-50 dark:bg-black">
+        <body className="font-apple bg-[#F5F5F7] -bg-gray-100 dark:bg-black">
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
             <Toaster />
