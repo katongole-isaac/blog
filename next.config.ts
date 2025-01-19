@@ -1,17 +1,26 @@
-import type { NextConfig } from "next";
+import { type NextConfig } from "next";
+import config from "@/config/default.json";
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**", 
+        hostname: "**",
       },
       {
         protocol: "http",
         hostname: "**",
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: config.blogBaseURL,
+        destination: "/",
+      },
+    ];
   },
 };
 

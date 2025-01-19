@@ -1,4 +1,5 @@
 {
   "getPosts": "/api/blogs",
-  "getPost": "/api/blogs"
+  "getPost": "/api/blogs",
+  "blogBaseURL":"/b"
 }
