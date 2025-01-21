@@ -1,39 +1,44 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-
-import config from "@/config/default.json";
-import { BlogResponse } from "@/utils/types";
-import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownParse";
 import { useCallback, useEffect, useState } from "react";
+
+import { BlogResponse } from "@/utils/types";
+import { useParams } from "next/navigation";
 import BlogHeader from "@/components/blog/header";
+import { BlogError } from "@/components/common/error";
 import BlogLoading from "@/components/blog/blogLoading";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchBlogById, getBlogState } from "@/store/blogSlice";
+import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownParse";
 
-interface Props {
-  params: Promise<unknown>;
-}
+interface Props {};
 
-const fetchBlogs: (blog: string) => () => Promise<BlogResponse> = (blog: string) => () =>
-  fetch(config.getPost + "/" + blog).then((res) => res.json());
+const BlogPage: React.FC<Props> = () => {
+  const param: { slug: string } = useParams();
 
-const BlogPage: React.FC<Props> = ({ params }) => {
-  const { data, error, isLoading } = useQuery({ queryKey: ["blogs"], queryFn: fetchBlogs("demo") });
+  const dispatch = useAppDispatch();
   const [html, setHtml] = useState("");
+  const { data, error, isLoading } = useAppSelector(getBlogState);
 
   const renderHtml = useCallback(async () => {
-    const _html = await renderMarkdownToHtml(data?.matter.content!);
+    const _html = await renderMarkdownToHtml((data as BlogResponse).matter.content!);
     setHtml(_html);
   }, [data]);
 
   useEffect(() => {
-    if (!html && data) renderHtml();
+    if (Object.keys(data).length <= 0) dispatch(fetchBlogById(param.slug.trim()));
+  }, []);
+
+  useEffect(() => {
+    if (!html && Object.keys(data).length > 0) renderHtml();
   }, [html, data]);
 
-  if (isLoading) return <BlogLoading />;
+  if (error) return <BlogError error={error} />;
 
   return (
     <div className="">
-      <BlogHeader blog={data!} />
+      {isLoading && <BlogLoading />}
+      {Object.keys(data).length > 0 && <BlogHeader blog={data as BlogResponse} />}
       {html && processHTML(html)}
     </div>
   );

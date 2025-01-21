@@ -25,4 +25,6 @@ export interface BlogResponse {
   isModified: boolean;
   /** The filename of the blog post */
   fileName: string;
+  /**A string that can act as the url for the blog post */
+  _slug:string
 }

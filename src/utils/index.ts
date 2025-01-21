@@ -108,10 +108,14 @@ interface DisplayOptions {
 }
 
 /**
- * Formats the display order for blog posts
+ * Formats the display order for blog posts.  The format - `[[1], [2,3], [4,5,6]]`  
+ * You can tweak the `output` based on the options given
  */
 
 const displayOrderForBlogs = <T>(items: T[], options: DisplayOptions = {}) => {
+
+  if(items.length <= 2) return [items];
+
   const { limit = items.length, doubleSubArrays = false, arrayUplimit: arrUplimit = 3 } = options;
 
   const results: T[][] = [];

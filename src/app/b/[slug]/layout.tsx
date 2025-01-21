@@ -4,11 +4,10 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
 import Navbar from "@/components/navbar";
-import { AppContext } from "@/context/appContext";
-import BlogHeader from "@/components/blog/header";
-import ReactQueryProvider from "@/utils/RQProvider";
-import BlogImagePreview from "@/components/blog/blogImagePreview";
+import ReactQueryProvider from "@/lib/reactQuery";
 import { DEFAULT_IMAGE } from "@/utils/constants";
+import { AppContext } from "@/context/appContext";
+import BlogImagePreview from "@/components/blog/blogImagePreview";
 
 interface Props {
   children: React.ReactNode;

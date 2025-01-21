@@ -1,18 +1,20 @@
 import fs from "fs";
 import path from "path";
+import slugify from "slugify";
 import matter from "gray-matter";
 import { NextResponse } from "next/server";
 
 import { type BlogResponse } from "@/utils/types";
+import apiErrorHandler from "@/lib/apiErrorHandler";
 
-export async function GET(req: Request) {
+async function _GET(req: Request) {
   const blogsDirectory = path.join(process.cwd(), "blogs");
 
   if (!fs.existsSync(blogsDirectory)) {
-    return NextResponse.json({ error: "Blogs directory is missing" }, { status: 404 });
+    return NextResponse.json({ error: "Blogs directory is missing" }, { status: 500 });
   }
 
-  const results: BlogResponse[] = [];
+  const blogs: BlogResponse[] = [];
 
   const fileNames = fs.readdirSync(blogsDirectory);
 
@@ -22,15 +24,23 @@ export async function GET(req: Request) {
     const stats = fs.statSync(filePath);
     const fileContents = fs.readFileSync(filePath);
 
-    results.push({
+    const _matter = matter(fileContents);
+
+    const _slug = slugify((_matter.data["slug"] as string).trim(), { lower: true, strict: true });
+
+    blogs.push({
+      _slug,
       fileName,
       //@ts-ignore
-      matter: matter(fileContents),
+      matter: _matter,
       createdAt: stats.birthtimeMs,
       lastModified: stats.mtimeMs,
       isModified: stats.birthtimeMs !== stats.mtimeMs ? true : false,
     });
   });
 
-  return NextResponse.json({ results });
+  return NextResponse.json({ blogs });
 }
+
+//@ts-ignore
+export const GET = apiErrorHandler(_GET);

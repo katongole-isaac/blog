@@ -1,17 +1,24 @@
 import BlogCard from "@/components/blog/blogCard";
-import { useQuery } from "@tanstack/react-query";
 
 import utils from "@/utils";
-import config from "@/config/default.json";
-import { type BlogResponse } from "@/utils/types";
+
 import BlogsLoading from "./blogsLoading";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchBlogs, getAllBlogsState } from "@/store/blogSlice";
+import { useEffect, useMemo } from "react";
+import { BlogError } from "@/components/common/error";
 
 export default function HomePage() {
-  const fetchBlogs: () => Promise<{ results: BlogResponse[] }> = () => fetch(config.getPosts).then((res) => res.json());
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["all-blogs"],
-    queryFn: fetchBlogs,
-  });
+  const dispatch = useAppDispatch();
+  const { data, isLoading, error } = useAppSelector(getAllBlogsState);
+
+  useEffect(() => {
+    if (data.length <= 0) dispatch(fetchBlogs());
+  }, []);
+
+  const blogs = useMemo(() => utils.displayOrderForBlogs(data), [data]);
+
+  if (error) return <div  className="mt-20 max-w-screen-md m-auto "><BlogError error={error} /> </div>
 
   return (
     <main className="dark:bg-black prose dark:prose-invert m-auto max-w-screen-lg mt-12 ">
@@ -20,8 +27,8 @@ export default function HomePage() {
         {isLoading && <BlogsLoading />}
         {data &&
           !isLoading &&
-          utils.displayOrderForBlogs(data.results).map((blogArray, index) => {
-            if (index === 0)
+          blogs.map((blogArray, index) => {
+            if (index === 0 && blogs.length > 1)
               return blogArray.map((blog, idx) => (
                 <BlogCard key={blog.matter.data.title + idx.toString()} blog={blog} size="lg" className="flex-1" />
               ));

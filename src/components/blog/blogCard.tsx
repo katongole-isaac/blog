@@ -1,11 +1,12 @@
-import { cn } from "@/lib/utils";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import Image from "next/legacy/image";
 import Link from "next/link";
-import { BlogResponse } from "@/utils/types";
-import config from "@/config/default.json";
-
 import slugify from "slugify";
+import Image from "next/legacy/image";
+
+import utils from "@/utils";
+import { cn } from "@/lib/utils";
+import config from "@/config/default.json";
+import { BlogResponse } from "@/utils/types";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Props {
   blog: BlogResponse;
@@ -14,19 +15,15 @@ interface Props {
 type CardProps = React.ComponentProps<typeof Card> & { size?: "sm" | "lg" };
 
 export default function BlogCard({ className, blog, size = "sm", ...props }: CardProps & Props) {
-  const { fileName, matter, createdAt } = blog;
+  const { matter, lastModified, _slug } = blog;
 
-  const blogURL = slugify(matter.data.slug, { lower: true, strict: true });
+  const slugURL = _slug.trim() ? _slug.trim() : matter.data.slug.trim();
+  const slug = slugify(slugURL, { lower: true, strict: true });
+  const blogURL = `${config.blogBaseURL}/${slug}`;
 
   if (size === "lg")
     return (
-      <Link
-        href={{
-          pathname: `${config.blogBaseURL}/${blogURL}`,
-          query: { a: "not-me" },
-        }}
-        className="block w-full no-underline"
-      >
+      <Link href={blogURL} className="block w-full no-underline">
         <Card
           className={cn("cursor-pointer group w-full md:grid grid-cols-[1fr_350px] relative overflow-hidden border-gray-50 shadow", className)}
           {...props}
@@ -47,7 +44,7 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
               <CardTitle className={cn("md:text-3xl")}>Apple reveals 2024's most downloaded apps and games</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className={cn("font-medium")}>{new Date().toDateString()} </CardDescription>
+              <CardDescription className={cn("font-medium")}>{utils.blogTimeFormat(lastModified)} </CardDescription>
             </CardContent>
           </div>
         </Card>
@@ -55,7 +52,7 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
     );
 
   return (
-    <Link href={`${config.blogBaseURL}`} className="no-underline">
+    <Link href={blogURL} className="no-underline">
       <Card className={cn(" cursor-pointer group min-w-[300px] w-full relative overflow-hidden border-gray-50 shadow", className)} {...props}>
         <div className={cn("min-h-48 relative border-b border-gray-50")}>
           <Image
@@ -70,7 +67,7 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
         <CardHeader className={cn("relative  h-auto  flex flex-col gap-3 ")}>
           <CardDescription className={cn("uppercase font-semibold text-xs")}>Qiuck release</CardDescription>
           <CardTitle>Apple reveals 2024's most downloaded apps and games</CardTitle>
-          <CardDescription className={cn("font-medium")}>{new Date().toDateString()} </CardDescription>
+          <CardDescription className={cn("font-medium")}>{utils.blogTimeFormat(lastModified)} </CardDescription>
         </CardHeader>
       </Card>
     </Link>

@@ -23,16 +23,16 @@ export default function BlogsLoading() {
   return (
     <div className="w-full space-y-14">
       <BlogCardLoading className="flex w-full gap-8 " size="lg" />
-      <div className="flex gap-8 w-full ">
+      <div className="space-y-4 md:flex gap-8 w-full ">
         <BlogCardLoading className="flex-1 " />
         <BlogCardLoading className="flex-1 " />
       </div>
-      <div className="flex gap-5 w-full ">
+      <div className="space-y-4 md:flex gap-5 w-full ">
         <BlogCardLoading className="flex-1 " />
         <BlogCardLoading className="flex-1 " />
         <BlogCardLoading className="flex-1 " />
       </div>
-      <div className="flex gap-5 w-full ">
+      <div className="space-y-4 md:flex gap-5 w-full ">
         <BlogCardLoading className="flex-1 " />
         <BlogCardLoading className="flex-1 " />
         <BlogCardLoading className="flex-1 " />
