@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import NextImage from "next/legacy/image";
 import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_IMAGE } from "@/utils/constants";
@@ -50,7 +50,7 @@ const BlogImagePreview: React.FC<Props> = ({ onClose }) => {
         <DialogTitle></DialogTitle>
         <div className="max-w-screen-lg w-full m-auto py-4 px-5 md:px-10 lg:px-5 h-full flex flex-col justify-center  ">
           <div ref={ref} className="relative bg-transparent w-full h-60 border- dark:border-neutral-900  md:h-96 lg:h-[26rem]">
-            <Image src={imageURL} alt="default.png" layout="fill" objectFit="contain" />
+            <NextImage src={imageURL} alt="default.png" layout="fill" sizes="100vw" objectFit="contain" quality={80} />
           </div>
         </div>
       </DialogContent>

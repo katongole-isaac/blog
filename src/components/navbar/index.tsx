@@ -42,7 +42,7 @@ export default function Navbar() {
       <nav
         className={`border-b border-gray-300 dark:border-neutral-800 py-2  ${
           openMobileMenu ? "bg-[#FAFAFC]" : "bg-gray-100/60 backdrop-blur filter"
-        }  dark:bg-neutral-900 fixed w-full top-0 z-50`}
+        }  dark:bg-neutral-900 fixed w-full top-0 z-[100]`}
       >
         <div className=" max-w-screen-lg m-auto flex items-center justify-between  px-3 md:px-5 lg:px-0">
           {/* logo */}

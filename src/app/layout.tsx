@@ -3,7 +3,10 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import {} from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import StoreProvider from "@/store/provider";
+
+import dynamic from "next/dynamic";
+
+const StoreProvider = dynamic(() => import("@/store/provider"), { loading: () => <>loading.lorem300</> });
 
 export const metadata: Metadata = {
   title: "Create Next App",

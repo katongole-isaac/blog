@@ -1,9 +1,12 @@
-import { marked, Renderer } from "marked";
-import DOMPurify from "dompurify";
-import parse, { DOMNode, domToReact } from "html-react-parser";
-import Code from "./blogCode";
 import Link from "next/link";
-import BlogImage from "./blogImage";
+import DOMPurify from "dompurify";
+import dynamic from "next/dynamic";
+import { marked, Renderer } from "marked";
+import parse, { DOMNode, domToReact } from "html-react-parser";
+
+import Code from "./blogCode";
+
+const BlogImage = dynamic(() => import('./blogImage'),{ssr:false});
 
 marked.use({
   async: false,
