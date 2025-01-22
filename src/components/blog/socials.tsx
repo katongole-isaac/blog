@@ -9,8 +9,10 @@ import utils from "@/utils";
 const SocialMediaLinks = () => {
   const iconSize = 20;
   
+  const blogURL = window.location.href;
+
   const handleCopyLink = async () => {
-    utils.copyToClipboard("Uganda", () => {
+    utils.copyToClipboard(blogURL, () => {
       toast.custom(<Toast />, { position: "bottom-right", id: "copy-link" });
     });
   };
@@ -26,11 +28,11 @@ const SocialMediaLinks = () => {
     <section className="py-2">
       <p className="absolute hidden " id="clipboard" data-clipboard-text="normal"></p>
       <div className="flex gap-4 text-neutral-500 [&>*]:cursor-pointer hover:[&_svg]:text-neutral-700 dark:hover:[&_svg]:text-neutral-400 duration-200 transition-all">
-        <Link href="https://www.facebook.com/sharer/sharer.php?u=https://your-blog-post-url.com" target="_blank" rel="noopener noreferrer">
+        <Link href={`https://www.facebook.com/sharer/sharer.php?u=${blogURL}`} target="_blank" rel="noopener noreferrer">
           <FaFacebook size={iconSize} />
         </Link>
         <Link
-          href="https://x.com/intent/tweet?text=Check+out+this+post!&url=https://your-blog-post-url.com"
+          href={`https://x.com/intent/tweet?text=Check+out+this+post!&url=${blogURL}`}
           target="_blank"
           rel="noopener noreferrer"
         >

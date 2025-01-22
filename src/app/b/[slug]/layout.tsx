@@ -30,7 +30,7 @@ export default function BlogLayout({ children }: Props): React.JSX.Element {
     setImagePreview((prev) => ({ ...prev, open: false }));
   };
   return (
-    <div className="bg-gray-50/50 dark:bg-black min-h-screen">
+    <div className="mt-5 bg-gray-50/50 dark:bg-black min-h-screen">
       <ReactQueryProvider>
         <AppContext.Provider value={{ imagePreviewOpen: imagePreview.open, handleImagePreview, imagePreviewURL: imagePreview.url }}>
           <AnimatePresence>{imagePreview.open && <BlogImagePreview onClose={closeImagePreview} />}</AnimatePresence>

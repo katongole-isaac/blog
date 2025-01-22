@@ -18,13 +18,23 @@ export default function HomePage() {
 
   const blogs = useMemo(() => utils.displayOrderForBlogs(data), [data]);
 
-  if (error) return <div  className="mt-20 max-w-screen-md m-auto "><BlogError error={error} /> </div>
+  if (error)
+    return (
+      <div className="mt-20 max-w-screen-md m-auto ">
+        <BlogError error={error} />
+      </div>
+    );
 
   return (
-    <main className="dark:bg-black prose dark:prose-invert m-auto max-w-screen-lg mt-12 ">
+    <main className="dark:bg-black prose dark:prose-invert m-auto max-w-screen-lg mt-16 ">
       {/* blog cotainer list */}
       <section className="max-w-screen-lg m-auto flex flex-col gap-8  items-center justify-center px-5 py-5 md:px-10 lg:px-14 md:py-8">
         {isLoading && <BlogsLoading />}
+        {data && !isLoading && blogs.length === 0 && (
+          <div className="">
+            <p className="text-xl tracking-wider font-semibold">Oops! Looks like there are no posts at the moment.</p>
+          </div>
+        )}
         {data &&
           !isLoading &&
           blogs.map((blogArray, index) => {

@@ -44,17 +44,13 @@ export default function Navbar() {
           openMobileMenu ? "bg-[#FAFAFC]" : "bg-gray-100/60 backdrop-blur filter"
         }  dark:bg-neutral-900 fixed w-full top-0 z-50`}
       >
-        <div className=" max-w-screen-lg m-auto flex justify-between ">
+        <div className=" max-w-screen-lg m-auto flex items-center justify-between  px-3 md:px-5 lg:px-0">
           {/* logo */}
           <div className="">navbar</div>
 
           <div className="flex items-center gap-2">
             {/* Toggle button */}
-            <div
-              onClick={() => setOpenMobileMenu(!openMobileMenu)}
-              className="md:hidden flex justify-center items-center borde w-max h-auto"
-              role="button"
-            >
+            <div onClick={() => setOpenMobileMenu(!openMobileMenu)} className="md:hidden flex justify-center items-center w-max h-auto" role="button">
               <ChevronDown
                 absoluteStrokeWidth
                 size={iconSize}

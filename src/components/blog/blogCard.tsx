@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import config from "@/config/default.json";
 import { BlogResponse } from "@/utils/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DEFAULT_CATEGORY } from "@/utils/constants";
+import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
 
 interface Props {
   blog: BlogResponse;
@@ -17,9 +19,13 @@ type CardProps = React.ComponentProps<typeof Card> & { size?: "sm" | "lg" };
 export default function BlogCard({ className, blog, size = "sm", ...props }: CardProps & Props) {
   const { matter, lastModified, _slug } = blog;
 
+  const { formattedTime } = useBlogTimeFormat(lastModified);
+
   const slugURL = _slug.trim() ? _slug.trim() : matter.data.slug.trim();
   const slug = slugify(slugURL, { lower: true, strict: true });
   const blogURL = `${config.blogBaseURL}/${slug}`;
+
+  const blogCategory = matter.data.tags[0].trim() ?? DEFAULT_CATEGORY;
 
   if (size === "lg")
     return (
@@ -40,11 +46,11 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
           </div>
           <div className="">
             <CardHeader className={cn("relative h-auto flex flex-col gap-3 mb-2")}>
-              <CardDescription className={cn("uppercase font-semibold text-xs")}>Qiuck release</CardDescription>
+              <CardDescription className={cn("uppercase font-semibold text-xs")}>{blogCategory}</CardDescription>
               <CardTitle className={cn("md:text-3xl")}>Apple reveals 2024's most downloaded apps and games</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className={cn("font-medium")}>{utils.blogTimeFormat(lastModified)} </CardDescription>
+              <CardDescription className={cn("font-medium")}>{formattedTime} </CardDescription>
             </CardContent>
           </div>
         </Card>
@@ -65,7 +71,7 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
           />
         </div>
         <CardHeader className={cn("relative  h-auto  flex flex-col gap-3 ")}>
-          <CardDescription className={cn("uppercase font-semibold text-xs")}>Qiuck release</CardDescription>
+          <CardDescription className={cn("uppercase font-semibold text-xs")}>{blogCategory}</CardDescription>
           <CardTitle>Apple reveals 2024's most downloaded apps and games</CardTitle>
           <CardDescription className={cn("font-medium")}>{utils.blogTimeFormat(lastModified)} </CardDescription>
         </CardHeader>
