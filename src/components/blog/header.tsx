@@ -41,7 +41,7 @@ const BlogHeader: React.FC<Props> = ({ blog }) => {
         <SocialMediaLinks />
         {metadata.image && (
           <div className="mt-8">
-            <div className="w-full h-52 md:h-72 relative">
+            <div className="w-full h-52 md:h-80 relative">
               <Image
                 src={metadata.image || DEFAULT_IMAGE}
                 alt={metadata.title}

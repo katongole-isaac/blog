@@ -19,7 +19,6 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Isaac Codes | Blog",
-    // images: [],
   },
   keywords: ["Programming", "Tech", "Technology", "AI", "Javascript", "Typescript"],
 };

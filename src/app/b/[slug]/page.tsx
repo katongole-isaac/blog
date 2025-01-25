@@ -10,7 +10,6 @@ import BlogLoading from "@/components/blog/blogLoading";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchBlogById, getBlogState } from "@/store/blogSlice";
 import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownParse";
-import { Metadata } from "next";
 
 interface Props {}
 

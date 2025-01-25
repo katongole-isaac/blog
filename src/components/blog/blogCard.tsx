@@ -33,10 +33,10 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
           className={cn("cursor-pointer group w-full md:grid grid-cols-[1fr_350px] relative overflow-hidden border-gray-50 shadow", className)}
           {...props}
         >
-          <div className={cn("min-h-48 relative border-r border-gray-50")}>
+          <div className={cn("min-h-48 relative border-r border-gray-50 dark:border-neutral-800")}>
             <Image
-              src="/images/default.png"
-              alt="default_image"
+              src={matter.data.image || DEFAULT_IMAGE}
+              alt={matter.data.title}
               layout="fill"
               objectFit="cover"
               priority
