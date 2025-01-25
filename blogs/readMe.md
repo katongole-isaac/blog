@@ -1,7 +1,7 @@
 ---
 title: "Not All You of asd "
 date: 2025-01-08
-slug: "journey-to-developer"
+slug: "more than normal"
 author: "Isaac Dev"
 tags:
   - Programming

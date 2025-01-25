@@ -1,5 +1,6 @@
 {
   "getPosts": "/api/blogs",
   "getPost": "/api/blogs",
-  "blogBaseURL":"/b"
+  "blogBaseURL": "/b",
+  "blogMetadata": "/api/blogs/metadata"
 }

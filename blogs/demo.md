@@ -1,5 +1,5 @@
 ---
-title: "The Journey to Becoming a Developer"
+title: "New The Journey to Becoming a Developer"
 date: 2025-01-08
 slug: "journey-to-developer"
 author: "Isaac Dev"
@@ -10,7 +10,6 @@ tags:
 description:  converted to HTML.  This demo page will let you type anything you like and see how it gets converted.  Live.  No more waiting around.  
 
 ---
-
 
 
 Marked - Markdown Parser

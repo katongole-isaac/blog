@@ -26,5 +26,17 @@ export interface BlogResponse {
   /** The filename of the blog post */
   fileName: string;
   /**A string that can act as the url for the blog post */
-  _slug:string
+  _slug: string;
+}
+
+/**
+ * This is used for blog metadata
+ */
+export interface BlogMetadata {
+  /**Blog tile */
+  title: string;
+  /**Blog description */
+  description: string;
+  /**Last modification time in ms */
+  lastModified: number;
 }

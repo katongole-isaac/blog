@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import dayjs from "dayjs";
 import slugify from "slugify";
 import matter from "gray-matter";
 import { NextResponse } from "next/server";
@@ -28,16 +29,26 @@ async function _GET(req: Request) {
 
     const _slug = slugify((_matter.data["slug"] as string).trim(), { lower: true, strict: true });
 
+    // We consider any changes made in a blog post that are not
+    // morethan one week to be within creationTime otherwise
+    // those are consider updates and isModified is set to true
+    const diffInWeeks = dayjs(stats.mtimeMs).diff(dayjs(stats.birthtimeMs), "week");
+
+    const isModified = diffInWeeks > 1 ? true :  false;
+
     blogs.push({
       _slug,
       fileName,
+      isModified,
       //@ts-ignore
       matter: _matter,
       createdAt: stats.birthtimeMs,
       lastModified: stats.mtimeMs,
-      isModified: stats.birthtimeMs !== stats.mtimeMs ? true : false,
     });
   });
+
+
+  blogs.sort((a, b)=> a.lastModified - b.lastModified ) // ASC order
 
   return NextResponse.json({ blogs });
 }

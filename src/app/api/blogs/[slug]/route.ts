@@ -5,11 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { BlogResponse } from "@/utils/types";
 import slugify from "slugify";
 import apiErrorHandler from "@/lib/apiErrorHandler";
+import dayjs from "dayjs";
 
 /**
  * Get a single blog post by slug (blog name)
  */
- async function _GET(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+async function _GET(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
   const regexp = /\w+(\.md)$/; // ending in .md
@@ -33,14 +34,21 @@ import apiErrorHandler from "@/lib/apiErrorHandler";
   const _matter = matter(fileContents);
   const _slug = slugify((_matter.data["slug"] as string).trim(), { lower: true, strict: true });
 
+  // We consider any changes made in a blog post that are not
+  // morethan one week to be within creationTime otherwise
+  // those are consider updates and isModified is set to true
+  const diffInWeeks = dayjs(stats.mtimeMs).diff(dayjs(stats.birthtimeMs), "week");
+
+  const isModified = diffInWeeks > 1 ? true : false;
+
   const blog: BlogResponse = {
     _slug,
     fileName,
+    isModified,
     //@ts-ignore
     matter: _matter,
     createdAt: stats.birthtimeMs,
     lastModified: stats.mtimeMs,
-    isModified: stats.birthtimeMs !== stats.mtimeMs ? true : false,
   };
 
   return NextResponse.json({ ...blog });

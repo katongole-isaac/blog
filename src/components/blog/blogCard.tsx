@@ -17,9 +17,9 @@ interface Props {
 type CardProps = React.ComponentProps<typeof Card> & { size?: "sm" | "lg" };
 
 export default function BlogCard({ className, blog, size = "sm", ...props }: CardProps & Props) {
-  const { matter, lastModified, _slug } = blog;
+  const { matter, lastModified, isModified, createdAt, _slug } = blog;
 
-  const { formattedTime } = useBlogTimeFormat(lastModified);
+  const { formattedTime } = useBlogTimeFormat(isModified ? lastModified : createdAt);
 
   const slugURL = _slug.trim() ? _slug.trim() : matter.data.slug.trim();
   const slug = slugify(slugURL, { lower: true, strict: true });
@@ -47,10 +47,12 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
           <div className="">
             <CardHeader className={cn("relative h-auto flex flex-col gap-3 mb-2")}>
               <CardDescription className={cn("uppercase font-semibold text-xs")}>{blogCategory}</CardDescription>
-              <CardTitle className={cn("md:text-3xl")}>Apple reveals 2024's most downloaded apps and games</CardTitle>
+              <CardTitle className={cn("md:text-3xl")}>{matter.data.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className={cn("font-medium")}>{formattedTime} </CardDescription>
+              <CardDescription className={cn("font-medium")}>
+                {isModified && <span className="font-semibold">Updated</span>} {formattedTime}{" "}
+              </CardDescription>
             </CardContent>
           </div>
         </Card>
@@ -59,7 +61,10 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
 
   return (
     <Link href={blogURL} className="no-underline">
-      <Card className={cn(" cursor-pointer group min-w-[300px] w-full relative overflow-hidden border-gray-50 shadow", className)} {...props}>
+      <Card
+        className={cn(" cursor-pointer group min-w-[330px] max-w-[400px] w-full relative overflow-hidden border-gray-50 shadow", className)}
+        {...props}
+      >
         <div className={cn("min-h-48 relative border-b border-gray-50")}>
           <Image
             src="/images/default_image.png"
@@ -71,9 +76,11 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
           />
         </div>
         <CardHeader className={cn("relative  h-auto  flex flex-col gap-3 ")}>
-          <CardDescription className={cn("uppercase font-semibold text-xs")}>{blogCategory}</CardDescription>
-          <CardTitle>Apple reveals 2024's most downloaded apps and games</CardTitle>
-          <CardDescription className={cn("font-medium")}>{utils.blogTimeFormat(lastModified)} </CardDescription>
+          <CardDescription className={cn("uppercase font-semibold text-xs line-clamp-1")}>{blogCategory}</CardDescription>
+          <CardTitle className="line-clamp-2">{matter.data.title}</CardTitle>
+          <CardDescription className={cn("font-medium")}>
+            {isModified && <span className="font-semibold">Updated</span>} {formattedTime}{" "}
+          </CardDescription>
         </CardHeader>
       </Card>
     </Link>
