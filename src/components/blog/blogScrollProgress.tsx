@@ -15,7 +15,7 @@ const BlogScrollProgress: React.FC<Props> = ({ scrollYProgress }) => {
         zIndex: 90, // remember mobile navbar zIndex is 100, you shudn't go over it
       }}
       className={`
-         bg-gradient-to-r from-rose-500/70 via-fuchsia-600/80 to-blue-500/50 fixed h-1 md:h-1 mt-[2.9rem] md:mt-[3.4rem] top-0 left-0 right-0`}
+         bg-gradient-to-r from-rose-500/70 via-fuchsia-600/80 to-blue-500/50 fixed h-1 md:h-1 mt-[3.5rem] top-0 left-0 right-0`}
     ></motion.div>
   );
 };

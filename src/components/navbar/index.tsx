@@ -3,11 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import AppNavigation, { MobileNavigation } from "./navigation";
 import { ChevronDown } from "lucide-react";
+import AppLogo from "../common/logo";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
   const iconSize = 30;
   const ref = useRef<HTMLDivElement>(null);
+
+  const homePage = "/";
+  const router = useRouter();
 
   const handleResize = () => {
     // close mobile menu nav upon leaving the medium breakpoint
@@ -46,7 +51,10 @@ export default function Navbar() {
       >
         <div className=" max-w-screen-lg m-auto flex items-center justify-between  px-3 md:px-5 lg:px-0">
           {/* logo */}
-          <div className="">navbar</div>
+          <div className="relative h-10 w-40 md:w-48">
+            
+            <AppLogo className="cursor-pointer" role="link" onClick={() => router.push(homePage)} />
+          </div>
 
           <div className="flex items-center gap-2">
             {/* Toggle button */}
