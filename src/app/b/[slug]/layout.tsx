@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import BlogLayout from "./blogLayout";
 import config from "@/config/default.json";
 import { type BlogMetadata } from "@/utils/types";
+import Footer from "@/components/common/footer";
 
 interface Props {
   children: React.ReactNode;
@@ -11,7 +12,12 @@ interface IMetadata {
   params: Promise<{ [key: string]: any }>;
 }
 export default function ({ children }: Props): React.JSX.Element {
-  return <BlogLayout>{children}</BlogLayout>;
+  return (
+    <>
+      <BlogLayout>{children}</BlogLayout>
+      <Footer />
+    </>
+  );
 }
 
 export async function generateMetadata({ params }: IMetadata): Promise<Metadata> {

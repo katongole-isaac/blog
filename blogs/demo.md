@@ -3,6 +3,7 @@ title: "New The Journey to Becoming a Developer"
 date: 2025-01-08
 slug: "journey-to-developer"
 author: "Isaac Dev"
+image: https://raw.githubusercontent.com/katongole-isaac/blogImages/master/node-js.jpg
 tags:
   - Programming
   - Career

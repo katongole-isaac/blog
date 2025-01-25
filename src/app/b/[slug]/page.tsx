@@ -14,7 +14,6 @@ import { Metadata } from "next";
 
 interface Props {}
 
-
 const BlogPage: React.FC<Props> = () => {
   const param: { slug: string } = useParams();
 

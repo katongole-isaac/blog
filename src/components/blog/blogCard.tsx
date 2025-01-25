@@ -2,12 +2,11 @@ import Link from "next/link";
 import slugify from "slugify";
 import Image from "next/legacy/image";
 
-import utils from "@/utils";
 import { cn } from "@/lib/utils";
 import config from "@/config/default.json";
 import { BlogResponse } from "@/utils/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DEFAULT_CATEGORY } from "@/utils/constants";
+import { DEFAULT_CATEGORY, DEFAULT_IMAGE } from "@/utils/constants";
 import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
 
 interface Props {
@@ -67,8 +66,8 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
       >
         <div className={cn("min-h-48 relative border-b border-gray-50")}>
           <Image
-            src="/images/default_image.png"
-            alt="default_image"
+            src={matter.data.image || DEFAULT_IMAGE}
+            alt={matter.data.title}
             layout="fill"
             objectFit="cover"
             priority

@@ -3,6 +3,7 @@ title: "Not All You of asd "
 date: 2025-01-08
 slug: "more than normal"
 author: "Isaac Dev"
+image: https://raw.githubusercontent.com/katongole-isaac/blogImages/master/node-js.jpg
 tags:
   - Programming
   - Career

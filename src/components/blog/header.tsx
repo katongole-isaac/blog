@@ -1,7 +1,8 @@
 import SocialMediaLinks from "./socials";
 import { BlogResponse } from "@/utils/types";
-import { DEFAULT_CATEGORY } from "@/utils/constants";
+import { DEFAULT_CATEGORY, DEFAULT_IMAGE } from "@/utils/constants";
 import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
+import Image from "next/legacy/image";
 
 interface Props {
   blog: BlogResponse;
@@ -19,7 +20,7 @@ const BlogHeader: React.FC<Props> = ({ blog }) => {
 
   return (
     <>
-      <section className="prose dark:prose-invert pb-6 mt-5">
+      <section className="prose dark:prose-invert pb-10 mt-5 ">
         <div className="flex flex-col gap-6">
           <div className="space-y-1 not-prose">
             <p className="uppercase text-neutral-500 dark:text-neutral-300 font-medium text-xs"> {blogCategory} </p>
@@ -38,6 +39,20 @@ const BlogHeader: React.FC<Props> = ({ blog }) => {
         )}
 
         <SocialMediaLinks />
+        {metadata.image && (
+          <div className="mt-8">
+            <div className="w-full h-52 md:h-72 relative">
+              <Image
+                src={metadata.image || DEFAULT_IMAGE}
+                alt={metadata.title}
+                layout="fill"
+                objectFit="cover"
+                priority
+                className="transition-all group-hover:scale-110 duration-300"
+              />
+            </div>
+          </div>
+        )}
       </section>
     </>
   );

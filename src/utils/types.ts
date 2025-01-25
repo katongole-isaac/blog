@@ -13,6 +13,8 @@ interface BlogMetaData {
   date?: string;
   /** Description of the blog post */
   description?: string;
+  /**Featured Image for the blog post */
+  image?:string
 }
 export interface BlogResponse {
   /** The results of parsing markdown of the blog post */

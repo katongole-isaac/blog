@@ -48,7 +48,7 @@ async function _GET(req: Request) {
   });
 
 
-  blogs.sort((a, b)=> a.lastModified - b.lastModified ) // ASC order
+  blogs.sort((a, b)=> b.lastModified - a.lastModified ) // ASC order
 
   return NextResponse.json({ blogs });
 }

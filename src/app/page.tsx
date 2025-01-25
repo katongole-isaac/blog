@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar";
 import HomePage from "./(home)/_page";
 import ReactQueryProvider from "@/lib/reactQuery";
 import Test from "./test";
+import Footer from "@/components/common/footer";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       {/* <Test /> */}
       <Navbar />
       <HomePage />
+      <Footer />
     </ReactQueryProvider>
   );
 }
