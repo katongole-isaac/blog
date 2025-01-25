@@ -12,6 +12,16 @@ const StoreProvider = dynamic(() => import("@/store/provider"), { loading: () =>
 export const metadata: Metadata = {
   title: "Isaac Codes | Blog",
   description: "Everything you need to know about technology and programming in general",
+  applicationName: "Isaac Codes",
+  openGraph: {
+    title: "Isaac Codes",
+    description: "Everything you need to know about technology and programming in general",
+    type: "website",
+    locale: "en_US",
+    siteName: "Isaac Codes | Blog",
+    // images: [],
+  },
+  keywords: ["Programming", "Tech", "Technology", "AI", "Javascript", "Typescript"],
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

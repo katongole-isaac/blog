@@ -33,8 +33,11 @@ const _GET = async (req: NextRequest, { params }: { params: Promise<{ slug: stri
 
     if (_slug !== slug.trim()) continue;
 
+    (blog as BlogMetadata).tags = _matter.data.tags;
     (blog as BlogMetadata).title = _matter.data.title;
+    (blog as BlogMetadata).image = _matter.data.image;
     (blog as BlogMetadata).lastModified = stats.mtimeMs;
+    (blog as BlogMetadata).createdAt = stats.birthtimeMs;
     (blog as BlogMetadata).description = _matter.data.description;
   }
 

@@ -14,7 +14,7 @@ interface BlogMetaData {
   /** Description of the blog post */
   description?: string;
   /**Featured Image for the blog post */
-  image?:string
+  image?: string;
 }
 export interface BlogResponse {
   /** The results of parsing markdown of the blog post */
@@ -41,4 +41,10 @@ export interface BlogMetadata {
   description: string;
   /**Last modification time in ms */
   lastModified: number;
+  /** The date (in milliseconds) at which the blog post was created */
+  createdAt: number;
+  /**Image of the blog post */
+  image?: string;
+  /**Keywords */
+  tags?: string[];
 }
