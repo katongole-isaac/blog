@@ -9,6 +9,10 @@ tags:
 description: A structured overview of the blog site, including features, functionality, and future enhancements.
 ---
 
+## Technology ok
+
+I have tried to make the `code`   readable and easy to understand so anyone familiar with React, Javascript and Typescript should be able to work with the code as ease.
+
 # Blog Overview
 
 ## Introduction

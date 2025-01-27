@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import {} from "next/font/google";
 import { Toaster } from "react-hot-toast";
@@ -24,9 +25,11 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const googleTagID = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID;
   return (
     <>
       <html lang="en" suppressHydrationWarning>
+        {googleTagID && <GoogleTagManager gtmId={googleTagID} />}
         <head>
           {/* Standard favicon */}
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />

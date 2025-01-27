@@ -1,6 +1,7 @@
 import Link from "next/link";
 import slugify from "slugify";
 import Image from "next/legacy/image";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 import { cn } from "@/lib/utils";
 import config from "@/config/default.json";
@@ -26,9 +27,17 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
 
   const blogCategory = matter.data.tags[0].trim() ?? DEFAULT_CATEGORY;
 
+  // analytics
+  const handleLinkClick = () =>
+    sendGTMEvent({
+      event: "blogView",
+      blog: matter.data.title,
+      blogUrl: window.location.href
+    });
+
   if (size === "lg")
     return (
-      <Link href={blogURL} className="block w-full no-underline">
+      <Link  onClick={handleLinkClick} href={blogURL} className="block w-full no-underline">
         <Card
           className={cn("cursor-pointer group w-full md:grid grid-cols-[1fr_350px] relative overflow-hidden border-gray-50 shadow", className)}
           {...props}
