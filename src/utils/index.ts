@@ -24,7 +24,7 @@ const blogTimeFormat = (time: number) => {
   // parsing in tz
   const blogCreationTime = dayjs.tz(time, tz);
 
-  console.log("Timezone: ",dayjs(time).toISOString());
+  console.log("Timezone: ",time,dayjs(time).toISOString());
   
   dayjs.updateLocale("en", {
     relativeTime: {
