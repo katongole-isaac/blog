@@ -20,7 +20,8 @@ const blogTimeFormat = (time: number) => {
   dayjs.extend(updateLocale);
   dayjs.extend(relativeTime);
 
-  const blogCreationTime = dayjs.utc(time).tz(tz);
+  dayjs.tz.setDefault(tz);
+  const blogCreationTime = dayjs.utc(time).tz(tz,true);
   
   dayjs.updateLocale("en", {
     relativeTime: {
@@ -51,10 +52,10 @@ const blogTimeFormat = (time: number) => {
 
   const hoursToSwitchDisplayDateFormats = 36;
 
-  const diffInHours = dayjs.utc().tz(tz).diff(blogCreationTime, "hours");
+  const diffInHours = dayjs.utc().tz(tz,true).diff(blogCreationTime, "hours");
 
   // calendar format
-  if (diffInHours >= hoursToSwitchDisplayDateFormats) return blogCreationTime.calendar(dayjs.utc().tz(tz));
+  if (diffInHours >= hoursToSwitchDisplayDateFormats) return blogCreationTime.calendar(dayjs.utc().tz(tz, true));
 
   // use relativeTime
   return blogCreationTime.fromNow();
