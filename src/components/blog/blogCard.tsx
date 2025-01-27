@@ -21,6 +21,8 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
 
   const { formattedTime } = useBlogTimeFormat(isModified ? lastModified : createdAt);
 
+  console.debug({createdAt, lastModified });
+
   const slugURL = _slug.trim() ? _slug.trim() : matter.data.slug.trim();
   const slug = slugify(slugURL, { lower: true, strict: true });
   const blogURL = `${config.blogBaseURL}/${slug}`;
