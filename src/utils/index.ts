@@ -11,17 +11,17 @@ import calendar from "dayjs/plugin/calendar"; // ES 2015
  * @returns Formatted string for the `time` passed
  */
 const blogTimeFormat = (time: number) => {
-  const blogCreationTime = dayjs(time);
-
   /**Timezone to be used for the blog dates and time */
   const tz = process.env.NEXT_PUBLIC_TIMEZONE!
-
+  
   dayjs.extend(utc);
   dayjs.extend(timezone);
   dayjs.extend(calendar);
   dayjs.extend(updateLocale);
   dayjs.extend(relativeTime);
 
+  const blogCreationTime = dayjs.utc(time).tz(tz);
+  
   dayjs.updateLocale("en", {
     relativeTime: {
       future: "in %s",
@@ -51,13 +51,13 @@ const blogTimeFormat = (time: number) => {
 
   const hoursToSwitchDisplayDateFormats = 36;
 
-  const diffInHours = dayjs().diff(blogCreationTime, "hours");
+  const diffInHours = dayjs.utc().tz(tz).diff(blogCreationTime, "hours");
 
   // calendar format
-  if (diffInHours >= hoursToSwitchDisplayDateFormats) return dayjs.utc(time).tz(tz).calendar(dayjs());
+  if (diffInHours >= hoursToSwitchDisplayDateFormats) return blogCreationTime.calendar(dayjs.utc().tz(tz));
 
   // use relativeTime
-  return dayjs.utc(time).tz(tz).fromNow();
+  return blogCreationTime.fromNow();
 };
 
 const fallbackCopyTextToClipboard = (text: string) => {
