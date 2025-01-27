@@ -1,4 +1,6 @@
 import dayjs from "dayjs";
+import timezone from "dayjs/plugin/utc";
+import utc from "dayjs/plugin/timezone";
 import relativeTime from "dayjs/plugin/relativeTime"; // ES 2015
 import updateLocale from "dayjs/plugin/updateLocale"; // ES 2015
 import calendar from "dayjs/plugin/calendar"; // ES 2015
@@ -11,6 +13,11 @@ import calendar from "dayjs/plugin/calendar"; // ES 2015
 const blogTimeFormat = (time: number) => {
   const blogCreationTime = dayjs(time);
 
+  /**Timezone to be used for the blog dates and time */
+  const tz = process.env.NEXT_PUBLIC_TIMEZONE!
+
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
   dayjs.extend(calendar);
   dayjs.extend(updateLocale);
   dayjs.extend(relativeTime);
@@ -47,10 +54,10 @@ const blogTimeFormat = (time: number) => {
   const diffInHours = dayjs().diff(blogCreationTime, "hours");
 
   // calendar format
-  if (diffInHours >= hoursToSwitchDisplayDateFormats) return dayjs(time).calendar(dayjs());
+  if (diffInHours >= hoursToSwitchDisplayDateFormats) return dayjs.utc(time).tz(tz).calendar(dayjs());
 
   // use relativeTime
-  return dayjs(time).fromNow();
+  return dayjs.utc(time).tz(tz).fromNow();
 };
 
 const fallbackCopyTextToClipboard = (text: string) => {
