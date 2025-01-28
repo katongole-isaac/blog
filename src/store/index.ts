@@ -24,7 +24,7 @@ const storage = typeof window !== "undefined" ? createWebStorage("local") : crea
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "ui"],
+  whitelist: ["blogs", "editor"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

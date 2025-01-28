@@ -42,7 +42,7 @@ Welcome to my blog! This site is powered by Markdown files, making it easy to wr
 
 ## Get Started
 
-Check out the latest posts and explore the content. Stay tuned for more updates!
+Check out the latest posts and explore the content. Stay tuned for more updates! [marked]
 
 ---
 
@@ -155,3 +155,6 @@ This image is from [Pexels](https://www.pexels.com), which offers free high-qual
 ---
 
 _Built with Markdown and love!_
+
+
+[marked](#heading-6)

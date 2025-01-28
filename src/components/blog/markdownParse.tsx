@@ -6,7 +6,7 @@ import parse, { DOMNode, domToReact } from "html-react-parser";
 
 import Code from "./blogCode";
 
-const BlogImage = dynamic(() => import('./blogImage'),{ssr:false});
+const BlogImage = dynamic(() => import("./blogImage"), { ssr: false });
 
 marked.use({
   async: false,
@@ -94,7 +94,14 @@ const replace = (domNode: DOMNode) => {
     }
   }
 };
-export const processHTML = (html: string) => parse(html, { replace });
+
+/**
+ * Transforms HTML to React elements
+ * @param html HTML string to transform to React elements
+ * @param preview Tell whether you're are parsing the markdown `preview` in the editor or not
+ * @returns Renderable Element
+ */
+export const processHTML = (html: string, preview = false) => preview ? parse(html): parse(html, { replace });
 
 renderer.heading = ({ depth, text, type }) => {
   const formatting = {

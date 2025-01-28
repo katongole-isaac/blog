@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import {} from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
 import dynamic from "next/dynamic";
@@ -49,7 +49,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <body className="font-apple bg-[#F5F5F7] -bg-gray-100 dark:bg-black">
           <StoreProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-              {children}
+              <TooltipProvider>{children}</TooltipProvider>
               <Toaster />
             </ThemeProvider>
           </StoreProvider>
