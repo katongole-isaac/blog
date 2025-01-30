@@ -2,5 +2,6 @@
   "getPosts": "/api/blogs",
   "getPost": "/api/blogs",
   "blogBaseURL": "/b",
-  "blogMetadata": "/api/blogs/metadata"
+  "blogMetadata": "/api/blogs/metadata",
+  "blogUploads": "/api/blogs/uploads"
 }

@@ -34,17 +34,15 @@ export interface BlogResponse {
 /**
  * This is used for blog metadata
  */
-export interface BlogMetadata {
-  /**Blog tile */
-  title: string;
-  /**Blog description */
-  description: string;
-  /**Last modification time in ms */
-  lastModified: number;
-  /** The date (in milliseconds) at which the blog post was created */
-  createdAt: number;
-  /**Image of the blog post */
-  image?: string;
-  /**Keywords */
-  tags?: string[];
-}
+
+export type BlogMetadata = Pick<BlogMetaData, "title" | "description" | "tags" | "image" | "slug"> & { lastModified?: number; createdAt?: number };
+
+/**
+ * Types of blog post to be posted.  
+ * 
+ * `draft` - Means saving the blog psot as draft .  
+ * 
+ * `published` -Blog post is ready and is live
+ *
+ */
+export type BlogType = "draft" | "published";

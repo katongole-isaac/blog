@@ -20,9 +20,18 @@ import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownPar
 import { InfoIcon } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
-const BlogUsageModal = () => {
+interface Props {
+  externalStatePassed?: boolean;
+  isOpen?: boolean;
+  setIsOpen?: (arg: boolean) => void;
+}
+
+const BlogUsageModal: React.FC<Props> = ({ isOpen, setIsOpen, externalStatePassed = false }) => {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const _open = externalStatePassed ? isOpen : open;
+  const _setOpen = externalStatePassed ? setIsOpen : setOpen;
 
   const TriggerButton = (
     <div role="button">
@@ -42,8 +51,8 @@ const BlogUsageModal = () => {
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>{TriggerButton}</DialogTrigger>
+      <Dialog open={_open} onOpenChange={_setOpen}>
+        {!externalStatePassed && <DialogTrigger asChild>{TriggerButton}</DialogTrigger>}
         <DialogContent className="bg-gray-50 dark:bg-black max-w-screen-lg max-h-[95%] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Blog Usage Guide</DialogTitle>
@@ -61,8 +70,8 @@ const BlogUsageModal = () => {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>{TriggerButton}</DrawerTrigger>
+    <Drawer open={_open} onOpenChange={_setOpen}>
+      {!externalStatePassed && <DrawerTrigger asChild>{TriggerButton}</DrawerTrigger>}
       <DrawerContent className="bg-gray-50  h-[90%]   dark:bg-black">
         <DrawerHeader className="text-left">
           <DrawerTitle>Blog Usage Guide</DrawerTitle>

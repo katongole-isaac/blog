@@ -5,41 +5,71 @@ import { sendGTMEvent } from "@next/third-parties/google";
 
 import { cn } from "@/lib/utils";
 import config from "@/config/default.json";
-import { BlogResponse } from "@/utils/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DEFAULT_CATEGORY, DEFAULT_IMAGE } from "@/utils/constants";
 import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
+import { ListBlobResultBlob } from "@vercel/blob";
+import grayMatter from "gray-matter";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
+import utils from "@/utils";
 
 interface Props {
-  blog: BlogResponse;
+  blog: ListBlobResultBlob;
 }
 
 type CardProps = React.ComponentProps<typeof Card> & { size?: "sm" | "lg" };
 
+export const fetchBlogContent = (url: string) =>
+  utils.fetchWithTimeout(url).then(async (res) => {
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error((error as Error).message ?? "Something went wrong while fetching Blog content");
+    }
+
+    return await (await res.blob()).text();
+  });
+
 export default function BlogCard({ className, blog, size = "sm", ...props }: CardProps & Props) {
-  const { matter, lastModified, isModified, createdAt, _slug } = blog;
+  const [matter, setMatter] = useState<ReturnType<typeof grayMatter> | null>(null);
 
-  const { formattedTime } = useBlogTimeFormat(isModified ? lastModified : createdAt);
+  const { url, uploadedAt, pathname } = blog;
 
-  console.log({createdAt, lastModified });
+  const { formattedTime } = useBlogTimeFormat(uploadedAt.toString());
 
-  const slugURL = _slug.trim() ? _slug.trim() : matter.data.slug.trim();
-  const slug = slugify(slugURL, { lower: true, strict: true });
-  const blogURL = `${config.blogBaseURL}/${slug}`;
+  const blogUrl = pathname.split("/")[1].replace(".md", "");
 
-  const blogCategory = matter.data.tags[0].trim() ?? DEFAULT_CATEGORY;
+  const blogURL = `${config.blogBaseURL}/${blogUrl}`;
+
+  const showCategory = useCallback(() => {
+    if (matter) return matter.data.tags[0].trim() ?? DEFAULT_CATEGORY;
+  }, [matter]);
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["blogs", url],
+    queryFn: ({ queryKey }) => fetchBlogContent(queryKey[1]),
+  });
+
+  useEffect(() => {
+    if (!matter && data) setMatter(grayMatter(data));
+  }, [data]);
 
   // analytics
-  const handleLinkClick = () =>
-    sendGTMEvent({
-      event: "blogView",
-      blog: matter.data.title,
-      blogUrl: window.location.href
-    });
+  const handleLinkClick = useCallback(
+    () =>
+      sendGTMEvent({
+        event: "blogView",
+        blog: matter?.data.title || "",
+        blogUrl: window.location.href,
+      }),
+    [matter]
+  );
+
+  if (!matter) return null;
 
   if (size === "lg")
     return (
-      <Link  onClick={handleLinkClick} href={blogURL} className="block w-full no-underline">
+      <Link onClick={handleLinkClick} href={blogURL} className="block w-full no-underline">
         <Card
           className={cn("cursor-pointer group w-full md:grid grid-cols-[1fr_350px] relative overflow-hidden border-gray-50 shadow", className)}
           {...props}
@@ -56,12 +86,13 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
           </div>
           <div className="">
             <CardHeader className={cn("relative h-auto flex flex-col gap-3 mb-2")}>
-              <CardDescription className={cn("uppercase font-semibold text-xs")}>{blogCategory}</CardDescription>
+              <CardDescription className={cn("uppercase font-semibold text-xs")}>{showCategory()}</CardDescription>
               <CardTitle className={cn("md:text-3xl")}>{matter.data.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className={cn("font-medium")}>
-                {isModified && <span className="font-semibold">Updated</span>} {formattedTime}{" "}
+                {/* {isModified && <span className="font-semibold">Updated</span>} */}
+                {formattedTime}{" "}
               </CardDescription>
             </CardContent>
           </div>
@@ -70,7 +101,7 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
     );
 
   return (
-    <Link href={blogURL} className="no-underline">
+    <Link href={blogURL} onClick={handleLinkClick} className="no-underline">
       <Card
         className={cn(" cursor-pointer group min-w-[330px] max-w-[400px] w-full relative overflow-hidden border-gray-50 shadow", className)}
         {...props}
@@ -86,10 +117,11 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
           />
         </div>
         <CardHeader className={cn("relative  h-auto  flex flex-col gap-3 ")}>
-          <CardDescription className={cn("uppercase font-semibold text-xs line-clamp-1")}>{blogCategory}</CardDescription>
+          <CardDescription className={cn("uppercase font-semibold text-xs line-clamp-1")}>{showCategory()}</CardDescription>
           <CardTitle className="line-clamp-2">{matter.data.title}</CardTitle>
           <CardDescription className={cn("font-medium")}>
-            {isModified && <span className="font-semibold">Updated</span>} {formattedTime}{" "}
+            {/* {isModified && <span className="font-semibold">Updated</span>} */}
+            {formattedTime}{" "}
           </CardDescription>
         </CardHeader>
       </Card>

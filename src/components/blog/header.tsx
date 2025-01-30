@@ -1,21 +1,15 @@
-import SocialMediaLinks from "./socials";
-import { BlogResponse } from "@/utils/types";
-import { DEFAULT_CATEGORY, DEFAULT_IMAGE } from "@/utils/constants";
-import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
 import Image from "next/legacy/image";
 
-interface Props {
-  blog: BlogResponse;
-}
-const BlogHeader: React.FC<Props> = ({ blog }) => {
-  const {
-    lastModified,
-    createdAt,
-    isModified,
-    matter: { data: metadata },
-  } = blog;
+import SocialMediaLinks from "./socials";
+import { DEFAULT_CATEGORY, DEFAULT_IMAGE } from "@/utils/constants";
+import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
 
-  const { formattedTime } = useBlogTimeFormat(isModified ? lastModified : createdAt);
+interface Props {
+  metadata: { [x: string]: any };
+  uploadedAt: string;
+}
+const BlogHeader: React.FC<Props> = ({ metadata, uploadedAt }) => {
+  const { formattedTime } = useBlogTimeFormat(uploadedAt);
   const blogCategory = metadata.tags[0] ?? DEFAULT_CATEGORY;
 
   return (
@@ -25,7 +19,8 @@ const BlogHeader: React.FC<Props> = ({ blog }) => {
           <div className="space-y-1 not-prose">
             <p className="uppercase text-neutral-500 dark:text-neutral-300 font-medium text-xs"> {blogCategory} </p>
             <p className=" text-neutral-500 dark:text-neutral-300 font-medium text-xs">
-              {isModified && <span className="font-semibold">Updated</span>} {formattedTime}{" "}
+              {/* {isModified && <span className="font-semibold">Updated</span>}  */}
+              {formattedTime}
             </p>
           </div>
 

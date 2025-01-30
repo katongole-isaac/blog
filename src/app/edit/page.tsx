@@ -9,7 +9,6 @@ import MdEditor, { Plugins } from "react-markdown-editor-lite";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-light.css";
 
-
 import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getEditorData, saveEditorChanges } from "@/store/editorSlice";
@@ -19,10 +18,12 @@ import { BLOG_GUIDE_MARKDOWN } from "@/utils/constants";
 import matter from "gray-matter";
 import BlogHeaderPreview from "@/components/blog/blogHeaderPreview";
 
+import config from "@/config/default.json";
+import ReactQueryProvider from "@/lib/reactQuery";
+
 // const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
 //   ssr: false,
 // });
-
 
 const highlight = (str: string, lang: string) => {
   if (lang && hljs.getLanguage(lang)) {
@@ -72,12 +73,13 @@ export default function () {
 
   const handleOnChange = (data: IChange, ev?: React.ChangeEvent<HTMLTextAreaElement>) => setEditorText(data.text);
 
-  const savedEditoChangesAsDraft = useCallback(() => {
+  const savedEditorChangesAsDraft = useCallback(() => {
+    console.log("saving....draft");
     dispatch(saveEditorChanges(editorText));
   }, [editorText]);
 
   useEffect(() => {
-    timerID = setTimeout(savedEditoChangesAsDraft, 5_000);
+    timerID = setTimeout(savedEditorChangesAsDraft, 500);
 
     return () => {
       timerID && clearInterval(timerID);
@@ -99,7 +101,7 @@ export default function () {
   }, []);
 
   return (
-    <>
+    <ReactQueryProvider>
       <AppEditorActions />
 
       <div className=""></div>
@@ -114,6 +116,6 @@ export default function () {
         renderHTML={renderMd}
       />
       <BlogUsageModal />
-    </>
+    </ReactQueryProvider>
   );
 }

@@ -9,7 +9,7 @@ import dayjs from "dayjs";
  * @see {@link /src/utils/blogTimeFormat} for implementation
  *
  */
-export default function (time: number) {
+export default function (time: number | string) {
   const [formatted, setFormatted] = useState(utils.blogTimeFormat(time));
 
   let timerID: NodeJS.Timeout;

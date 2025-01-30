@@ -10,10 +10,10 @@ import calendar from "dayjs/plugin/calendar"; // ES 2015
  * @param time - Time in milliseconds
  * @returns Formatted string for the `time` passed
  */
-const blogTimeFormat = (time: number) => {
+const blogTimeFormat = (time: number | string) => {
   /**Timezone to be used for the blog dates and time */
-  const tz = process.env.NEXT_PUBLIC_TIMEZONE!
-  
+  const tz = process.env.NEXT_PUBLIC_TIMEZONE!;
+
   dayjs.extend(utc);
   dayjs.extend(timezone);
   dayjs.extend(calendar);
@@ -24,8 +24,6 @@ const blogTimeFormat = (time: number) => {
   // parsing in tz
   const blogCreationTime = dayjs.tz(time, tz);
 
-  console.log("Timezone: ",time,dayjs(time).toISOString());
-  
   dayjs.updateLocale("en", {
     relativeTime: {
       future: "in %s",
@@ -124,7 +122,9 @@ interface DisplayOptions {
  */
 
 const displayOrderForBlogs = <T>(items: T[], options: DisplayOptions = {}) => {
-  if (items.length <= 2) return [items];
+  if (items.length <= 3) return [items];
+
+  if (items.length == 4 || items.length == 5) return [[items[0]], items.slice(1)];
 
   const { limit = items.length, doubleSubArrays = false, arrayUplimit: arrUplimit = 3 } = options;
 
@@ -195,8 +195,32 @@ const displayOrderForBlogs = <T>(items: T[], options: DisplayOptions = {}) => {
   return results;
 };
 
+interface FetchWithTimeoutOptions extends RequestInit {
+  timeout?: number;
+}
+
+const fetchWithTimeout = async (url: string | URL, options: FetchWithTimeoutOptions = { timeout: 60_000 /**30 seconds (1minute) */ }) => {
+  const controller = new AbortController();
+  const signal = controller.signal;
+
+  const { timeout, ...fetchOptions } = options;
+
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, { ...fetchOptions, signal });
+    clearTimeout(timeoutId); // Clear timeout if request completes
+    return response;
+  } catch (error) {
+    if ((error as Error).name === "AbortError") throw new Error("The request took too long to respond and has timed out. Please try again.");
+
+    throw error;
+  }
+};
+
 export default {
   blogTimeFormat,
   displayOrderForBlogs,
   copyToClipboard,
+  fetchWithTimeout,
 };

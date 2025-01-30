@@ -13,7 +13,7 @@ export default function HomePage() {
   const { data, isLoading, error } = useAppSelector(getAllBlogsState);
 
   useEffect(() => {
-    if (data.length <= 0) dispatch(fetchBlogs());
+    dispatch(fetchBlogs());
   }, []);
 
   const blogs = useMemo(() => utils.displayOrderForBlogs(data), [data]);
@@ -40,13 +40,13 @@ export default function HomePage() {
           blogs.map((blogArray, index) => {
             if (index === 0 && blogs.length > 1)
               return blogArray.map((blog, idx) => (
-                <BlogCard key={blog.matter.data.title + idx.toString()} blog={blog} size="lg" className="flex-1" />
+                <BlogCard key={blog.pathname + idx.toString()} blog={blog} size="lg" className="flex-1" />
               ));
 
             return (
               <div key={index} className="flex flex-col md:flex-row gap-4">
                 {blogArray.map((blog, _idx) => (
-                  <BlogCard key={blog.matter.data.title + _idx.toString()} blog={blog} />
+                  <BlogCard key={blog.pathname + _idx.toString()} blog={blog} />
                 ))}
               </div>
             );
