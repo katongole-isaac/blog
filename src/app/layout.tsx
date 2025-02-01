@@ -50,7 +50,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <StoreProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
               <TooltipProvider>{children}</TooltipProvider>
-              <Toaster />
+              <Toaster toastOptions={{ style: { maxWidth: "400px" } }} />
             </ThemeProvider>
           </StoreProvider>
         </body>

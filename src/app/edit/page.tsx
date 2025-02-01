@@ -1,3 +1,5 @@
+//@refresh
+
 "use client";
 
 import dynamic from "next/dynamic";
@@ -5,7 +7,7 @@ import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownParse";
 
-import MdEditor, { Plugins } from "react-markdown-editor-lite";
+import { Plugins } from "react-markdown-editor-lite";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-light.css";
 
@@ -21,9 +23,9 @@ import BlogHeaderPreview from "@/components/blog/blogHeaderPreview";
 import config from "@/config/default.json";
 import ReactQueryProvider from "@/lib/reactQuery";
 
-// const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
-//   ssr: false,
-// });
+const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
+  ssr: false,
+});
 
 const highlight = (str: string, lang: string) => {
   if (lang && hljs.getLanguage(lang)) {
@@ -45,7 +47,7 @@ interface IChange {
   html: string;
 }
 
-MdEditor.use(Plugins.FontUnderline);
+// MdEditor.use(Plugins.FontUnderline);
 
 const placeholder = `
 ---
@@ -104,17 +106,19 @@ export default function () {
     <ReactQueryProvider>
       <AppEditorActions />
 
-      <div className=""></div>
-      <MdEditor
-        id="editor"
-        theme="dark"
-        placeholder={placeholder}
-        value={editorText}
-        onChange={handleOnChange}
-        defaultValue={BLOG_GUIDE_MARKDOWN}
-        style={{ height: "500px" }}
-        renderHTML={renderMd}
-      />
+      <div data-color-mode="" className="h-[calc(100vh-18vh)] dark:bg-neutral-800">
+        <MdEditor
+          id="editor"
+          placeholder={placeholder}
+          value={editorText}
+          onChange={handleOnChange}
+          defaultValue={BLOG_GUIDE_MARKDOWN}
+          className="h-full"
+          // markdownClass="dark:!bg-neutral-800 dark:!text-white"
+          
+          renderHTML={renderMd}
+        />
+      </div>
       <BlogUsageModal />
     </ReactQueryProvider>
   );

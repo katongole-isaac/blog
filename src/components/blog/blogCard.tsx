@@ -1,5 +1,4 @@
 import Link from "next/link";
-import slugify from "slugify";
 import Image from "next/legacy/image";
 import { sendGTMEvent } from "@next/third-parties/google";
 

@@ -28,6 +28,7 @@
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.11.1",
     "html-react-parser": "^5.2.2",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.469.0",
     "markdown-it": "^14.1.0",
     "marked": "^15.0.6",
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^5.64.2",
+    "@types/lodash": "^4.17.15",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^20",
     "@types/react": "^19",

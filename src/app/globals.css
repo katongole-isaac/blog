@@ -117,4 +117,51 @@ body {
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: #555;
   }
+
+  /* div#editor {
+    @apply border dark:border-neutral-800;
+  }
+
+  textarea#editor_md,
+  div#editor_html {
+    @apply dark:bg-neutral-900  dark:text-white;
+  }
+
+  section.sec-md.section {
+    @apply border-none;
+  }
+  div#editor > div.rc-md-navigation.visible {
+    @apply !bg-black;
+  }
+
+  #editor.rc-md-editor div.rc-md-navigation.visible > div.navigation-nav  {
+    background-color: black !important;
+    padding: 0;
+  }
+  .rc-md-editor .rc-md-navigation {
+    @apply bg-black;
+  } */
+
+  /* div#editor > div.rc-md-navigation.visible > div.navigation-nav span.button {
+    @apply dark:text-gray-600;
+  }
+
+  div#editor.rc-md-editor > div.rc-md-navigation.visible > div.navigation-nav.left {
+    color: gray;
+    @apply bg-neutral-700;
+  } */
 }
+
+/* @media (prefers-color-scheme: dark) {
+  div#editor > div.rc-md-navigation.visible {
+    background-color: #2b2b2b;
+  }
+
+  div#editor > div.rc-md-navigation.visible > div.navigation-nav span.button {
+    color: #a7a7a7;
+  }
+
+  div#editor > div.rc-md-navigation.visible > div.navigation-nav span.button:hover {
+    color: gray;
+  }
+} */

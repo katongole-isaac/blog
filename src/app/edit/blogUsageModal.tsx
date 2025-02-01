@@ -38,9 +38,12 @@ const BlogUsageModal: React.FC<Props> = ({ isOpen, setIsOpen, externalStatePasse
       <Tooltip>
         <TooltipTrigger
           role="button"
-          className="w-10 h-10 rounded-full hover:bg-gray-200/50 border flex justify-center items-center shadow-lg absolute bottom-2 right-2 md:right-5 md:bottom-5 group"
+          className="w-10 h-10 rounded-full hover:bg-gray-200/50 dark:hover:bg-neutral-800 border border-neutral-500 dark:border-neutral-700  flex justify-center items-center shadow-lg fixed bottom-2 right-2 md:right-5 md:bottom-5 group"
         >
-          <InfoIcon size={20} className="text-neutral-800 group-hover:scale-95 transition-all" />
+          <InfoIcon
+            size={20}
+            className="text-neutral-800 dark:text-neutral-500 dark:group-hover:text-neutral-500 group-hover:scale-105 transition-all"
+          />
         </TooltipTrigger>
         <TooltipContent>
           <small>Guidlines followed when creating a blog post</small>

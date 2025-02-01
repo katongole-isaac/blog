@@ -1,68 +1,46 @@
 "use client";
 
-import grayMatter from "gray-matter";
 import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
 
 import BlogHeader from "@/components/blog/header";
 import { BlogError } from "@/components/common/error";
 import BlogLoading from "@/components/blog/blogLoading";
-import { fetchBlogContent } from "@/components/blog/blogCard";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchBlogById, getBlogState } from "@/store/blogSlice";
+import { fetchBlogById, getBlogState, getProcessedBlogs } from "@/store/blogSlice";
 import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownParse";
-import { ListBlobResultBlob } from "@vercel/blob";
 
-interface Props {}
-
-const BlogPage: React.FC<Props> = () => {
-  const param: { slug: string } = useParams();
+const BlogPage = () => {
+  const { slug }: { slug: string } = useParams();
 
   const dispatch = useAppDispatch();
   const [html, setHtml] = useState("");
-  const [blogContentURL, setBlogContentURL] = useState("");
-  const [matter, setMatter] = useState<ReturnType<typeof grayMatter> | null>(null);
 
-  const { data: blog, error, isLoading } = useAppSelector(getBlogState);
+  const { error, isLoading } = useAppSelector(getBlogState);
 
-  const { refetch, data: blogContents } = useQuery({
-    queryKey: ["blogs", blogContentURL],
-    queryFn: ({ queryKey }) => fetchBlogContent(queryKey[1]),
-    enabled: false,
-  });
+  const processedBlogs = useAppSelector(getProcessedBlogs);
+
+  const blog = processedBlogs.find((p) => p.pathname.split("/")[1]?.replace(".md", "") === slug);
 
   const renderHtml = useCallback(async () => {
-    const _html = await renderMarkdownToHtml(matter?.content!);
+    const _html = await renderMarkdownToHtml(blog?.matter?.content!);
     setHtml(_html);
-  }, [matter]);
-
-  useEffect(() => {
-    dispatch(fetchBlogById({ blogType: "published", slug: param.slug }));
-  }, []);
-
-  useEffect(() => {
-    if (blog && "url" in blog) setBlogContentURL(blog.url);
   }, [blog]);
 
   useEffect(() => {
-    if (blogContentURL) refetch();
-  }, [blogContentURL]);
+    if (blog) renderHtml();
+  }, [blog]);
 
   useEffect(() => {
-    if (!matter && blogContents) setMatter(grayMatter(blogContents));
-  }, [blogContents]);
-
-  useEffect(() => {
-    if (matter) renderHtml();
-  }, [matter]);
+    if (processedBlogs.length == 0 || !blog) dispatch(fetchBlogById({ blogType: "published", slug }));
+  }, [blog]);
 
   if (error) return <BlogError error={error} />;
 
   return (
     <div className="">
       {isLoading && <BlogLoading />}
-      {matter && <BlogHeader metadata={matter.data} uploadedAt={(blog as ListBlobResultBlob)?.uploadedAt.toString()} />}
+      {blog && <BlogHeader metadata={blog.matter.data} uploadedAt={blog.uploadedAt as string} />}
       {html && processHTML(html)}
     </div>
   );

@@ -10,25 +10,24 @@ interface BlogMetaData {
   /**Author of the blog post */
   author?: string;
   /** The date(in milliseconds) at which the blog post was created or last modified */
-  date?: string;
-  /** Description of the blog post */
-  description?: string;
+
+  description: string;
   /**Featured Image for the blog post */
-  image?: string;
+  image: string;
 }
-export interface BlogResponse {
+export interface ProcessedBlog {
   /** The results of parsing markdown of the blog post */
   matter: ReturnType<typeof matter> & { data: BlogMetaData };
   /** The date (in milliseconds) at which the blog post was created */
-  createdAt: number;
+  uploadedAt: number | string;
   /** The date (in milliseconds) at which the blog post was last modified */
-  lastModified: number;
+  // lastModified: number;
   /** Checks whether the blog post was modified  */
-  isModified: boolean;
-  /** The filename of the blog post */
-  fileName: string;
-  /**A string that can act as the url for the blog post */
-  _slug: string;
+  // isModified: boolean;
+  /** The pathname of the blog post */
+  pathname: string;
+  /**This is used in redux only for caching mechanism */
+  _lastUpdated: number;
 }
 
 /**
@@ -38,10 +37,10 @@ export interface BlogResponse {
 export type BlogMetadata = Pick<BlogMetaData, "title" | "description" | "tags" | "image" | "slug"> & { lastModified?: number; createdAt?: number };
 
 /**
- * Types of blog post to be posted.  
- * 
- * `draft` - Means saving the blog psot as draft .  
- * 
+ * Types of blog post to be posted.
+ *
+ * `draft` - Means saving the blog psot as draft .
+ *
  * `published` -Blog post is ready and is live
  *
  */

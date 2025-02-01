@@ -4,10 +4,11 @@ import utc from "dayjs/plugin/timezone";
 import relativeTime from "dayjs/plugin/relativeTime"; // ES 2015
 import updateLocale from "dayjs/plugin/updateLocale"; // ES 2015
 import calendar from "dayjs/plugin/calendar"; // ES 2015
+import { toastPromiseDefaultConfig } from "./toast";
 
 /**
  * Formats Time
- * @param time - Time in milliseconds
+ * @param time - Time can be string or number (milliseconds)
  * @returns Formatted string for the `time` passed
  */
 const blogTimeFormat = (time: number | string) => {
@@ -21,8 +22,9 @@ const blogTimeFormat = (time: number | string) => {
   dayjs.extend(relativeTime);
 
   dayjs.tz.setDefault(tz);
-  // parsing in tz
-  const blogCreationTime = dayjs.tz(time, tz);
+
+  // convert time to tz
+  const blogCreationTime = dayjs(time).tz(tz);
 
   dayjs.updateLocale("en", {
     relativeTime: {
@@ -43,7 +45,7 @@ const blogTimeFormat = (time: number | string) => {
     calendar: {
       lastDay: "[Yesterday]",
       sameDay: "[Today at] h:mm A",
-      lastWeek: "[Last] dddd [at] h:mm A",
+      lastWeek: "[Last] dddd ",
       sameElse: "MMMM D, YYYY",
     },
   });
@@ -124,7 +126,8 @@ interface DisplayOptions {
 const displayOrderForBlogs = <T>(items: T[], options: DisplayOptions = {}) => {
   if (items.length <= 3) return [items];
 
-  if (items.length == 4 || items.length == 5) return [[items[0]], items.slice(1)];
+  if (items.length == 4) return [[items[0]], items.slice(1)];
+  if (items.length == 5) return [[items[0]], items.slice(1, items.length - 1), [items[items.length - 1]]];
 
   const { limit = items.length, doubleSubArrays = false, arrayUplimit: arrUplimit = 3 } = options;
 
@@ -223,4 +226,5 @@ export default {
   displayOrderForBlogs,
   copyToClipboard,
   fetchWithTimeout,
+  toastPromiseDefaultConfig,
 };
