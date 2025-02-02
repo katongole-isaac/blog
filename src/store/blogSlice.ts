@@ -1,7 +1,6 @@
 import { BlogType, ProcessedBlog } from "@/utils/types";
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import _ from "lodash";
 import config from "@/config/default.json";
 import { QueryClient } from "@tanstack/react-query";
 import { ListBlobResultBlob } from "@vercel/blob";
