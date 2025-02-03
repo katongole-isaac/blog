@@ -9,6 +9,7 @@ import BlogLoading from "@/components/blog/blogLoading";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchBlogById, getBlogState, getProcessedBlogs } from "@/store/blogSlice";
 import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownParse";
+import ProgressBar from "@/components/common/progressBar";
 
 const BlogPage = () => {
   const { slug }: { slug: string } = useParams();
@@ -36,12 +37,13 @@ const BlogPage = () => {
   }, [blog]);
 
   if (error && error?.cause?.status === 404) return notFound();
-  
+
   if (error) return <BlogError error={error} />;
 
   return (
     <div className="">
-      {isLoading && <BlogLoading />}
+      {isLoading && blog && <ProgressBar />}
+      {isLoading && !blog && <BlogLoading />}
       {blog && <BlogHeader metadata={blog.matter.data} uploadedAt={blog.uploadedAt as string} />}
       {html && processHTML(html)}
     </div>

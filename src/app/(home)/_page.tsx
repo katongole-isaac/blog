@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchBlogs, getAllBlogsState } from "@/store/blogSlice";
 import { useEffect, useMemo } from "react";
 import { BlogError } from "@/components/common/error";
+import ProgressBar from "@/components/common/progressBar";
 
 export default function HomePage() {
   const dispatch = useAppDispatch();
@@ -26,31 +27,32 @@ export default function HomePage() {
     );
 
   return (
-    <main className="dark:bg-black prose dark:prose-invert m-auto max-w-screen-lg mt-16 ">
-      
-      {/* blog cotainer list */}
-      <section className="max-w-screen-lg m-auto flex flex-col gap-8 items-center  px-5 py-5 md:px-10 lg:px-14 md:py-8">
-        {isLoading && <BlogsLoading />}
-        {!!data?.length && !isLoading && blogs.length === 0 && (
-          <div className="">
-            <p className="text-xl tracking-wider font-semibold">Oops! Looks like there are no posts at the moment.</p>
-          </div>
-        )}
-        {!!data?.length &&
-          !isLoading &&
-          blogs.map((blogArray, index) => {
-            if (index === 0 && blogs.length > 1)
-              return blogArray.map((blog, idx) => <BlogCard key={blog.pathname + idx.toString()} blog={blog} size="lg" className="flex-1" />);
+    <>
+      {isLoading && data && data?.length > 0 && <ProgressBar />}
+      <main className="dark:bg-black prose dark:prose-invert m-auto max-w-screen-lg mt-16 ">
+        {/* blog cotainer list */}
+        <section className="max-w-screen-lg m-auto flex flex-col gap-8 items-center  px-5 py-5 md:px-10 lg:px-14 md:py-8">
+          {isLoading && data?.length === 0 && <BlogsLoading />}
+          {!!data?.length && !isLoading && blogs.length === 0 && (
+            <div className="">
+              <p className="text-xl tracking-wider font-semibold">Oops! Looks like there are no posts at the moment.</p>
+            </div>
+          )}
+          {!!data?.length &&
+            blogs.map((blogArray, index) => {
+              if (index === 0 && blogs.length > 1)
+                return blogArray.map((blog, idx) => <BlogCard key={blog.pathname + idx.toString()} blog={blog} size="lg" className="flex-1" />);
 
-            return (
-              <div key={index} className="flex flex-col md:flex-row gap-4">
-                {blogArray.map((blog, _idx) => (
-                  <BlogCard key={blog.pathname + _idx.toString()} blog={blog} />
-                ))}
-              </div>
-            );
-          })}
-      </section>
-    </main>
+              return (
+                <div key={index} className="flex flex-col md:flex-row gap-4">
+                  {blogArray.map((blog, _idx) => (
+                    <BlogCard key={blog.pathname + _idx.toString()} blog={blog} />
+                  ))}
+                </div>
+              );
+            })}
+        </section>
+      </main>
+    </>
   );
 }

@@ -10,6 +10,7 @@ export default function Home() {
   return (
     <ReactQueryProvider>
       <Navbar />
+      <div className="min-h-14"></div>
       <HomePage />
       <Footer />
     </ReactQueryProvider>

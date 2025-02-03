@@ -176,7 +176,7 @@ export const fetchBlogById = createAsyncThunk<ListBlobResultBlob, { blogType: Bl
         if (found) {
           const diffInMinutes = dayjs().diff(dayjs(found._lastUpdated), "minutes");
 
-          // Use the previous processed blogs for only 5 mins
+          // Use the previous processed blog for only 5 mins
           // Implements a simple cache mechanism
           const CacheTime = 5; // mins
 
