@@ -1,8 +1,8 @@
 import Image from "next/legacy/image";
 
 import SocialMediaLinks from "./socials";
-import { DEFAULT_CATEGORY, DEFAULT_IMAGE } from "@/utils/constants";
 import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
+import { DEFAULT_CATEGORY, DEFAULT_IMAGE } from "@/utils/constants";
 
 interface Props {
   metadata: { [x: string]: any };
@@ -28,7 +28,7 @@ const BlogHeader: React.FC<Props> = ({ metadata, uploadedAt }) => {
         </div>
 
         {metadata.description && (
-          <div className="font-semibold text-lg mb-0 py-2">
+          <div className="font-semibold text-center text-lg mb-0 py-2">
             <p>{metadata.description}</p>
           </div>
         )}

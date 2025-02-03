@@ -44,7 +44,7 @@ const SocialMediaLinks: React.FC<Props> = ({ preview = false }) => {
   return (
     <section className="py-2">
       <p className="absolute hidden " id="clipboard" data-clipboard-text="normal"></p>
-      <div className="flex gap-4 text-neutral-500 [&>*]:cursor-pointer hover:[&_svg]:text-neutral-700 dark:hover:[&_svg]:text-neutral-400 duration-200 transition-all">
+      <div className="flex gap-4 justify-center text-neutral-500 [&>*]:cursor-pointer hover:[&_svg]:text-neutral-700 dark:hover:[&_svg]:text-neutral-400 duration-200 transition-all">
         <Link href={`https://www.facebook.com/sharer/sharer.php?u=${blogURL}`} target="_blank" rel="noopener noreferrer">
           <FaFacebook size={iconSize} />
         </Link>

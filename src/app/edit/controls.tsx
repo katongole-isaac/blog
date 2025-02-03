@@ -21,29 +21,26 @@ interface BlogPayload {
 }
 
 const publishBlog = async (payload: BlogPayload) => {
-  
   const url = `${config.blogUploads}?filename=${payload.metadata.slug}`;
-  return utils.fetchWithTimeout(url, { method: "POST", body: JSON.stringify(payload), headers: { "Content-Type": "application/json" } }).then(async (res) => {
-    if (!res.ok) {
-      const error = await res.json(); // server error;
-      throw new Error(error?.message || "Something went wrong while posting blog post", {
-        cause: { status: res.status, statusText: res.statusText, message: error?.message || res.statusText },
-      });
-    }
-    return await res.json();
-  });
+  return utils
+    .fetchWithTimeout(url, { method: "POST", body: JSON.stringify(payload), headers: { "Content-Type": "application/json" } })
+    .then(async (res) => {
+      if (!res.ok) {
+        const error = await res.json(); // server error;
+        throw new Error(error?.message || "Something went wrong while posting blog post", {
+          cause: { status: res.status, statusText: res.statusText, message: error?.message || res.statusText },
+        });
+      }
+      return await res.json();
+    });
 };
 
-
 const AppEditorActions = () => {
-
   const { mutateAsync, data, error, isPending } = useMutation({
     mutationKey: ["upload-post"],
     mutationFn: publishBlog,
     onMutate: (v) => {},
-    onSuccess: (data, v) => {
-
-    },
+    onSuccess: (data, v) => {},
     onError: (error, v, c) => {},
   });
 
@@ -83,18 +80,24 @@ const AppEditorActions = () => {
       };
 
       // send to the backend
-      const sendBlog = () =>
+      const sendBlog = async () =>
         toast.promise(
-         mutateAsync(payload),
+          mutateAsync(payload),
           {
             loading: <span className="text-gray-400"> Publishing your blog post</span>,
+
             success: (blog: PutBlobResult) => {
               const slug = blog.pathname.split("/")[1].replace(".md", "");
 
               return (
                 <div className="flex gap-3 text-neutral-100 dark:text-neutral-400">
                   <span>Post published</span>
-                  <Link href={`${config.blogBaseURL}/${slug}`} target="_blank" className="text-blue-500 hover:text-blue-600 underline cursor-pointer">
+                  <Link
+                    href={`${config.blogBaseURL}/${slug}`}
+                    onClick={() => toast.dismiss("promise")}
+                    target="_blank"
+                    className="text-blue-500 hover:text-blue-600 underline cursor-pointer"
+                  >
                     view
                   </Link>
                 </div>

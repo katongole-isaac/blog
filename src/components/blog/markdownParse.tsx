@@ -116,7 +116,7 @@ renderer.heading = ({ depth, text, type }) => {
   // <a href=${id}  data-type="page-link" class="text-inherit">  ${text} <span class="hidden group-hover:inline" >#</span> </a>
 
   return `
-  <h${depth} id=${id} class="${formatting[depth as keyof typeof formatting]} mt-4 mb-2 group" >
+  <h${depth} id=${id} class="${formatting[depth as keyof typeof formatting]} mt-8 mb-5 group" >
     ${text}
   </h${depth}>
   `;
@@ -143,18 +143,18 @@ renderer.blockquote = function (this, token) {
 };
 
 renderer.listitem = function (this, token) {
-  return `<li> ${this.parser.parse(token.tokens)} </li>`;
+  return `<li>${this.parser.parse(token.tokens)}</li>`;
 };
 
 renderer.codespan = function (this, token) {
-  return `<code  data-type="inline" > ${token.text} </code>`;
+  return `<code  data-type="inline" >${token.text}</code>`;
 };
 
 renderer.paragraph = function (this, token) {
-  return `<p class="mb-4 leading-6"> ${this.parser.parseInline(token.tokens)} </p>`;
+  return `<p class=" mb-4 leading-7">${this.parser.parseInline(token.tokens)}</p>`;
 };
 renderer.hr = (token) => `<${token.type} class="my-12 border border-gray-200 dark:border-neutral-800" />`;
-renderer.strong = ({ text, type }) => `<${type} class="font-semibold"> ${text} </${type}>`;
+renderer.strong = ({ text, type }) => `<${type} class="font-semibold">${text}</${type}>`;
 
 marked.use({ renderer });
 
