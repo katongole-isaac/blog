@@ -14,7 +14,7 @@ interface Props {
 interface IMetadata {
   params: Promise<{ [key: string]: any }>;
 }
-export default function ({ children }: Props): React.JSX.Element {
+export default function DynamicBlogLayout({ children }: Props): React.JSX.Element {
   return (
     <>
       <BlogLayout>{children}</BlogLayout>

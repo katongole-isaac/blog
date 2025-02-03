@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import BlogHeader from "@/components/blog/header";
@@ -35,6 +35,8 @@ const BlogPage = () => {
     if (processedBlogs.length == 0 || !blog) dispatch(fetchBlogById({ blogType: "published", slug }));
   }, [blog]);
 
+  if (error && error?.cause?.status === 404) return notFound();
+  
   if (error) return <BlogError error={error} />;
 
   return (

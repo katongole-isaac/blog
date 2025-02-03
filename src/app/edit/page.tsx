@@ -66,7 +66,7 @@ tags:
 Write your content here
 `;
 
-export default function () {
+export default function EditPage() {
   const [editorText, setEditorText] = useState(useAppSelector(getEditorData));
 
   const dispatch = useAppDispatch();
@@ -115,7 +115,7 @@ export default function () {
           defaultValue={BLOG_GUIDE_MARKDOWN}
           className="h-full"
           // markdownClass="dark:!bg-neutral-800 dark:!text-white"
-          
+
           renderHTML={renderMd}
         />
       </div>

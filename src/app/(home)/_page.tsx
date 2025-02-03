@@ -27,6 +27,7 @@ export default function HomePage() {
 
   return (
     <main className="dark:bg-black prose dark:prose-invert m-auto max-w-screen-lg mt-16 ">
+      
       {/* blog cotainer list */}
       <section className="max-w-screen-lg m-auto flex flex-col gap-8 items-center  px-5 py-5 md:px-10 lg:px-14 md:py-8">
         {isLoading && <BlogsLoading />}

@@ -18,7 +18,7 @@ export default function ThemeSwitch() {
       <DropdownMenuTrigger asChild>
         <div
           role="button"
-          className="w-max h-max border dark:border-neutral-600 border-gray-200 px-[0.65rem] py-[0.5rem] rounded-md relative dark:hover:bg-neutral-700 hover:bg-gray-50 bg-white dark:bg-inherit "
+          className="w-max h-max border dark:border-neutral-600 border-gray-200 px-[0.65rem] py-[0.5rem] rounded-full relative dark:hover:bg-neutral-700 hover:bg-gray-50 bg-white dark:bg-inherit "
         >
           <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 " />
           <Moon className="absolute h-[1.2rem] w-[1.3rem] top-2 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />

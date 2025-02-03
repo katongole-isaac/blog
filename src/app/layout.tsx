@@ -3,12 +3,13 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "react-hot-toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import StoreProvider from "@/store/provider";
 import "./globals.css";
 
-import dynamic from "next/dynamic";
-import LayoutLoading from "./loading";
+// import dynamic from "next/dynamic";
+// import LayoutLoading from "./loading";
 
-const StoreProvider = dynamic(() => import("@/store/provider"), { loading: () => <LayoutLoading /> });
+// const StoreProvider = dynamic(() => import("@/store/provider"), { loading: () => <LayoutLoading /> });
 
 export const metadata: Metadata = {
   title: "Isaac Codes | Blog",

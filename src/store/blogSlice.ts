@@ -12,7 +12,7 @@ interface Blog<T> {
   isLoading: boolean;
   data: T | null;
   lastFetch: number;
-  error: any;
+  error: { message: string; status: number } | any;
 }
 
 interface InitialState {
@@ -91,6 +91,7 @@ const slice = createSlice({
       blog.isLoading = false;
       blog.lastFetch = 0;
       blog.error = (action.payload as any).error;
+      
     });
   },
 });
@@ -136,7 +137,7 @@ const fetchAllBlogs = (url: string) =>
     if (!res.ok) {
       if (res.status === 404) {
         const notFoundError = await res.json();
-        return Promise.reject(new Error(notFoundError?.message || "The request resource doesn't exist"));
+        return Promise.reject(new Error(notFoundError?.message || "The request resource doesn't exist", { cause: { status: 404 } }));
       }
 
       return Promise.reject(
@@ -162,7 +163,6 @@ export const fetchBlogById = createAsyncThunk<ListBlobResultBlob, { blogType: Bl
     try {
       /**URL format for the blog as is stored in vercel blog store */
       const url = `${config.blogUploads}?type=${blogType}&blogUrl=${slug}`;
-
 
       const {
         blogs: { blogs, blog: oldBlog, processedBlogs },
