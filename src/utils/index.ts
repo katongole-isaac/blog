@@ -206,13 +206,15 @@ interface FetchWithTimeoutOptions extends RequestInit {
   timeout?: number;
 }
 
-const fetchWithTimeout = async (url: string | URL, options: FetchWithTimeoutOptions = { timeout: 60_000 /**30 seconds (1minute) */ }) => {
+const fetchWithTimeout = async (url: string | URL, options: FetchWithTimeoutOptions = { timeout: 60_000 /**60 seconds (1minute) */ }) => {
   const controller = new AbortController();
   const signal = controller.signal;
 
   const { timeout, ...fetchOptions } = options;
 
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  const defaultTiemout = 1 * 60 * 1_000 // 1 minute
+
+  const timeoutId = setTimeout(() => controller.abort(), timeout || defaultTiemout);
 
   try {
     const response = await fetch(url, { ...fetchOptions, signal });
@@ -220,7 +222,6 @@ const fetchWithTimeout = async (url: string | URL, options: FetchWithTimeoutOpti
     return response;
   } catch (error) {
     if ((error as Error).name === "AbortError") throw new Error("The request took too long to respond and has timed out. Please try again.");
-
     throw error;
   }
 };

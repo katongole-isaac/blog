@@ -1,28 +1,46 @@
+import toast from "react-hot-toast";
+import { useEffect, useMemo, useState } from "react";
 import BlogCard from "@/components/blog/blogCard";
 
 import utils from "@/utils";
-
 import BlogsLoading from "./blogsLoading";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchBlogs, getAllBlogsState } from "@/store/blogSlice";
-import { useEffect, useMemo } from "react";
 import { BlogError } from "@/components/common/error";
 import ProgressBar from "@/components/common/progressBar";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { clearAllBlogError, fetchBlogs, getAllBlogsState } from "@/store/blogSlice";
 
 export default function HomePage() {
   const dispatch = useAppDispatch();
+  const [onFirstRender, setOnFirstRender] = useState(true);
+
   const { data, isLoading, error } = useAppSelector(getAllBlogsState);
 
   useEffect(() => {
+    setOnFirstRender(false);
+    dispatch(clearAllBlogError());
     dispatch(fetchBlogs());
   }, []);
 
+  useEffect(() => {
+    if (error && data && data.length > 0 && !onFirstRender)
+      toast.custom(
+        <div className="max-w-[400px] min-w-[400px] border border-rose-600 py-3 px-4 text-white from-rose-700 via-rose-800 to-rose-900  bg-gradient-to-b">
+          {error?.message}
+        </div>,
+        {
+          id: "blogs_fetch_error",
+          position: "bottom-left",
+        }
+      );
+  }, [data, onFirstRender, error]);
+
   const blogs = useMemo(() => (data ? utils.displayOrderForBlogs(data) : []), [data]);
 
-  if (error)
+  if (error && data?.length === 0)
     return (
       <div className="mt-20 max-w-screen-md m-auto ">
-        <BlogError error={error} />
+        {" "}
+        <BlogError error={error} />{" "}
       </div>
     );
 

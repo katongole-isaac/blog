@@ -7,7 +7,7 @@ export default function (handler: (...arg: { [key: string]: any }[]) => Promise<
     } catch (error: any) {
       console.error("\x1b[31m; An error occurred: %s \x1b[0m;", error);
 
-      return NextResponse.json({ error: { code: error?.code, message: error?.message } }, { status: 500 });
+      return NextResponse.json({ message: error?.message }, { status: 500 });
     }
   };
 }

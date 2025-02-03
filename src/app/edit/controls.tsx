@@ -1,18 +1,19 @@
+import slugify from "slugify";
+import Link from "next/link";
+import { useState } from "react";
+import matter from "gray-matter";
+import toast from "react-hot-toast";
+import { Loader } from "lucide-react";
+import { PutBlobResult } from "@vercel/blob";
+import { useMutation } from "@tanstack/react-query";
+
+import utils from "@/utils";
+import config from "@/config/default.json";
+import BlogUsageModal from "./blogUsageModal";
+import { useAppSelector } from "@/store/hooks";
 import { Button } from "@/components/ui/button";
 import { getEditorData } from "@/store/editorSlice";
-import { useAppSelector } from "@/store/hooks";
 import type { BlogMetadata, BlogType } from "@/utils/types";
-import matter from "gray-matter";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import BlogUsageModal from "./blogUsageModal";
-import slugify from "slugify";
-import { useMutation } from "@tanstack/react-query";
-import config from "@/config/default.json";
-import { Loader } from "lucide-react";
-import utils from "@/utils";
-import Link from "next/link";
-import { PutBlobResult } from "@vercel/blob";
 
 interface BlogPayload {
   metadata: BlogMetadata;
@@ -20,8 +21,9 @@ interface BlogPayload {
 }
 
 const publishBlog = async (payload: BlogPayload) => {
+  
   const url = `${config.blogUploads}?filename=${payload.metadata.slug}`;
-  return fetch(url, { method: "POST", body: JSON.stringify(payload), headers: { "Content-Type": "application/json" } }).then(async (res) => {
+  return utils.fetchWithTimeout(url, { method: "POST", body: JSON.stringify(payload), headers: { "Content-Type": "application/json" } }).then(async (res) => {
     if (!res.ok) {
       const error = await res.json(); // server error;
       throw new Error(error?.message || "Something went wrong while posting blog post", {
@@ -32,14 +34,16 @@ const publishBlog = async (payload: BlogPayload) => {
   });
 };
 
-const url = "https://9d3odxrej5fvz5hs.public.blob.vercel-storage.com/published/how-to-write-a-blog-AIK59WIQxLZMgD64BiX3aSGqhDTz3Z.md";
-const fe = () => fetch(url).then(async (res) => await res.blob());
 
 const AppEditorActions = () => {
-  const { mutate, data, error, isPending } = useMutation({
+
+  const { mutateAsync, data, error, isPending } = useMutation({
+    mutationKey: ["upload-post"],
     mutationFn: publishBlog,
     onMutate: (v) => {},
-    onSuccess: (data, v) => {},
+    onSuccess: (data, v) => {
+
+    },
     onError: (error, v, c) => {},
   });
 
@@ -55,11 +59,11 @@ const AppEditorActions = () => {
       const description = data?.description?.trim() || "";
       const slug = data?.slug?.trim() || "";
       const image = data?.image?.trim() || "";
-      const tags = data?.tags || [];
+      const tags = data?.tags ? (Array.isArray(data?.tags) ? data?.tags : [data?.tags]) : [];
 
       // if the blog doesn't meet the guidelines
       // show the guidelines
-      if (!(title && description && slug && image && tags.length > 0) || !content.trim()) {
+      if (!(title && slug && image && tags.length > 0) || !content.trim()) {
         setTimeout(() => {
           toast.custom(noContentMessage, { id: "blog-guidlines-publish" });
         }, 1_000);
@@ -81,12 +85,7 @@ const AppEditorActions = () => {
       // send to the backend
       const sendBlog = () =>
         toast.promise(
-          new Promise((res, rej) => {
-            mutate(payload, {
-              onSuccess: res,
-              onError: rej,
-            });
-          }),
+         mutateAsync(payload),
           {
             loading: <span className="text-gray-400"> Publishing your blog post</span>,
             success: (blog: PutBlobResult) => {

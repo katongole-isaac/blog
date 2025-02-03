@@ -7,7 +7,6 @@ import MarkdownIt from "markdown-it";
 import "react-markdown-editor-lite/lib/index.css";
 import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownParse";
 
-import { Plugins } from "react-markdown-editor-lite";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-light.css";
 
@@ -20,7 +19,6 @@ import { BLOG_GUIDE_MARKDOWN } from "@/utils/constants";
 import matter from "gray-matter";
 import BlogHeaderPreview from "@/components/blog/blogHeaderPreview";
 
-import config from "@/config/default.json";
 import ReactQueryProvider from "@/lib/reactQuery";
 
 const MdEditor = dynamic(() => import("react-markdown-editor-lite"), {
@@ -76,7 +74,6 @@ export default function EditPage() {
   const handleOnChange = (data: IChange, ev?: React.ChangeEvent<HTMLTextAreaElement>) => setEditorText(data.text);
 
   const savedEditorChangesAsDraft = useCallback(() => {
-    console.log("saving....draft");
     dispatch(saveEditorChanges(editorText));
   }, [editorText]);
 
@@ -94,11 +91,12 @@ export default function EditPage() {
       return (
         <>
           {Object.keys(data).length > 0 && <BlogHeaderPreview metadata={data} />}
-          {processHTML(mdParser.render(content), true)}
+          {processHTML(await renderMarkdownToHtml(content), true)}
         </>
       );
     } catch (ex) {
       return mdParser.render(text);
+      // return processHTML(await renderMarkdownToHtml(text), true);
     }
   }, []);
 
