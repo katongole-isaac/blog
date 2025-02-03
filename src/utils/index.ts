@@ -6,21 +6,25 @@ import updateLocale from "dayjs/plugin/updateLocale"; // ES 2015
 import calendar from "dayjs/plugin/calendar"; // ES 2015
 import { toastPromiseDefaultConfig } from "./toast";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(calendar);
+dayjs.extend(updateLocale);
+dayjs.extend(relativeTime);
+
+/**Timezone to be used for the blog dates and time */
+const tz = process.env.NEXT_PUBLIC_TIMEZONE!;
+
+const dayjsConvertToTz = (arg: string | number, _tz = tz) => dayjs(arg).tz(_tz);
+
 /**
  * Formats Time
  * @param time - Time can be string or number (milliseconds)
  * @returns Formatted string for the `time` passed
  */
 const blogTimeFormat = (time: number | string) => {
-  /**Timezone to be used for the blog dates and time */
-  const tz = process.env.NEXT_PUBLIC_TIMEZONE!;
-
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  dayjs.extend(calendar);
-  dayjs.extend(updateLocale);
-  dayjs.extend(relativeTime);
-
   dayjs.tz.setDefault(tz);
 
   // convert time to tz
@@ -226,5 +230,6 @@ export default {
   displayOrderForBlogs,
   copyToClipboard,
   fetchWithTimeout,
+  dayjsConvertToTz,
   toastPromiseDefaultConfig,
 };

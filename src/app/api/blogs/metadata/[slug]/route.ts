@@ -1,45 +1,39 @@
-import fs from "fs";
-import path from "path";
-import slugify from "slugify";
 import matter from "gray-matter";
 import { NextRequest, NextResponse } from "next/server";
 
+import utils from "@/utils";
+import vercelBlob from "@/lib/vercelBlob";
 import { type BlogMetadata } from "@/utils/types";
 import apiErrorHandler from "@/lib/apiErrorHandler";
 
 const _GET = async (req: NextRequest, { params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
 
-  const blogsDirectory = path.join(process.cwd(), "blogs");
+  const url = `published/${slug}.md`;
 
-  if (!fs.existsSync(blogsDirectory)) {
-    return NextResponse.json({ error: "Blogs directory is missing" }, { status: 500 });
-  }
+  const { data, error, status } = await vercelBlob.getBlogByUrl(url);
+
+  if (error && status) return NextResponse.json({ message: error, status });
+
+  if (error) return NextResponse.json({ message: error });
+
+  const response = await fetch(data?.url as string);
+
+  if (!response.ok) return NextResponse.json({ message: await response.json() });
+
+  const blogContents = await (await response.blob()).text();
 
   const blog: BlogMetadata | {} = {};
 
-  const fileNames = fs.readdirSync(blogsDirectory);
+  const _matter = matter(blogContents);
 
-  for (let fileName of fileNames) {
-    const filePath = path.join(blogsDirectory, fileName);
+  const createdAt = utils.dayjsConvertToTz(data?.uploadedAt?.toString()!);
 
-    const fileContents = fs.readFileSync(filePath);
-
-    const stats = fs.statSync(filePath);
-
-    const _matter = matter(fileContents);
-
-    const _slug = slugify((_matter.data["slug"] as string).trim(), { lower: true, strict: true });
-
-    if (_slug !== slug.trim()) continue;
-
-    (blog as BlogMetadata).tags = _matter.data.tags;
-    (blog as BlogMetadata).title = _matter.data.title;
-    (blog as BlogMetadata).image = _matter.data.image;
-    (blog as BlogMetadata).lastModified = stats.mtimeMs;
-    (blog as BlogMetadata).createdAt = stats.birthtimeMs;
-    (blog as BlogMetadata).description = _matter.data.description;
-  }
+  (blog as BlogMetadata).tags = _matter.data.tags;
+  (blog as BlogMetadata).title = _matter.data.title;
+  (blog as BlogMetadata).image = _matter.data.image;
+  (blog as BlogMetadata).createdAt = createdAt.unix();
+  (blog as BlogMetadata).description = _matter.data.description;
 
   return NextResponse.json({ ...blog });
 };
