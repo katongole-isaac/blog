@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 import { AnimatePresence, useScroll } from "framer-motion";
 
 import Navbar from "@/components/navbar";
+import constants from "@/utils/constants";
 import ReactQueryProvider from "@/lib/reactQuery";
-import { DEFAULT_IMAGE } from "@/utils/constants";
 import { AppContext } from "@/context/appContext";
 import BlogScrollProgress from "@/components/blog/blogScrollProgress";
 
@@ -25,7 +25,7 @@ export default function BlogLayout({ children }: Props): React.JSX.Element {
   });
 
   const handleImagePreview = (src: string) => {
-    if (src === DEFAULT_IMAGE) return;
+    if (src === constants.DEFAULT_IMAGE) return;
     setImagePreview((prev) => ({ ...prev, url: src, open: true }));
   };
 

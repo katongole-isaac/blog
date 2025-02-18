@@ -3,10 +3,14 @@
  */
 
 import { type BlogType } from "@/utils/types";
-import { list, ListBlobResult, put, PutBlobResult, del, head, HeadBlobResult, BlobClientTokenExpiredError, BlobNotFoundError } from "@vercel/blob";
+import { list, ListBlobResult, put, PutBlobResult, del, head, HeadBlobResult, BlobNotFoundError } from "@vercel/blob";
 
 interface UploadOptions {
   blogType: BlogType;
+  /**Used to tell whether you're replace the entire stored blog post.  This may be set to `true` in the `PUT` method */
+  replace: boolean;
+  /**This is used to tell whether the draft is being modified so as not to add randomSuffix to the blog filename instead to use the filename as is */
+  modified: boolean;
 }
 
 /**
@@ -27,7 +31,7 @@ const blogDirectories = {
 const uploadBlogPost = async (blogFileName: string, fileContents: any, opts?: Partial<UploadOptions>) => {
   let data: PutBlobResult | null, error: null;
 
-  const options: UploadOptions = { blogType: "published", ...opts };
+  const options: UploadOptions = { blogType: "published", replace: false, modified: false, ...opts };
 
   if (!(options.blogType.toLowerCase().trim() in blogDirectories))
     throw new Error("Cannot upload this file to unsupported path. Make sure that the directory you're trying to upload to is supported");
@@ -37,13 +41,18 @@ const uploadBlogPost = async (blogFileName: string, fileContents: any, opts?: Pa
   const filename = `${directoryPath}/${blogFileName}.md`;
 
   try {
-    const blogs = await list({ prefix: directoryPath });
+    if (!options.replace) {
+      const blogs = await list({ prefix: directoryPath });
+      const found = blogs.blobs.find((blob) => blob.pathname === filename);
 
-    const found = blogs.blobs.find((blob) => blob.pathname === filename);
+      if (found) throw new Error("A blog with this slug or URL already exists. Please choose a different one.");
+    }
 
-    if (found) throw new Error("A blog with this slug or URL already exists. Please choose a different one.");
-
-    data = await put(filename, fileContents, { access: "public", addRandomSuffix: false });
+    data = await put(filename, fileContents, {
+      access: "public",
+      addRandomSuffix: options.replace && !options.modified ? true : false,
+      cacheControlMaxAge: 0,
+    });
 
     return { data, error: null };
   } catch (ex) {
@@ -94,7 +103,7 @@ const getBlogByUrl = async (url: string) => {
 
 /**
  * Deletes one or more blog posts
- * @param blogUrl Url for the blog post
+ * @param blogUrl Blog URL can be a string or an array of string
  * @returns
  */
 const deleteBlogPost = async (blogUrl: string | string[]) => {

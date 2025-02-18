@@ -1,3 +1,4 @@
+import _ from "lodash";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/utc";
 import utc from "dayjs/plugin/timezone";
@@ -206,13 +207,13 @@ interface FetchWithTimeoutOptions extends RequestInit {
   timeout?: number;
 }
 
-const fetchWithTimeout = async (url: string | URL, options: FetchWithTimeoutOptions = { timeout: 60_000 /**60 seconds (1minute) */ }) => {
+const fetchWithTimeout = async (url: string | URL, options: FetchWithTimeoutOptions = {} ) => {
   const controller = new AbortController();
   const signal = controller.signal;
 
   const { timeout, ...fetchOptions } = options;
 
-  const defaultTiemout = 1 * 60 * 1_000 // 1 minute
+  const defaultTiemout = 2 * 60 * 1_000; // 2 minutes
 
   const timeoutId = setTimeout(() => controller.abort(), timeout || defaultTiemout);
 
@@ -226,7 +227,35 @@ const fetchWithTimeout = async (url: string | URL, options: FetchWithTimeoutOpti
   }
 };
 
+/**
+ * Filter logic
+ *
+ */
+
+export const filter = (items: any[], path: string, searchQuery: string) =>
+  _.filter(items, (item) => item[path].toLowerCase().includes(searchQuery, 0));
+
+export const pages = (totalCount: number, pageSize: number) => _.range(1, Math.ceil(totalCount / pageSize) + 1);
+
+export const paginate = (items: any[], pageSize: number, currentPage: number) => {
+  const startIndex = (currentPage - 1) * pageSize;
+
+  return _(items).slice(startIndex).take(pageSize).value();
+};
+
+/**
+ * Sorting logic
+ *
+ */
+const sort = (items: any[], path: string, order: "asc" | "desc" | boolean) => {
+  return _.orderBy(items, [path], [order]);
+};
+
 export default {
+  sort,
+  pages,
+  filter,
+  paginate,
   blogTimeFormat,
   displayOrderForBlogs,
   copyToClipboard,

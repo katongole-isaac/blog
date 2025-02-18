@@ -34,7 +34,7 @@ export default function HomePage() {
       );
   }, [data, onFirstRender, error]);
 
-  const blogs = useMemo(() => (data ? utils.displayOrderForBlogs(data) : []), [data]);
+  const blogs = useMemo(() => (data ? utils.displayOrderForBlogs(data) : [[]]), [data]);
 
   if (error && data?.length === 0)
     return (
@@ -51,7 +51,7 @@ export default function HomePage() {
         {/* blog cotainer list */}
         <section className="max-w-screen-lg m-auto flex flex-col gap-8 items-center  px-5 py-5 md:px-10 lg:px-14 md:py-8">
           {isLoading && data?.length === 0 && <BlogsLoading />}
-          {!!data?.length && !isLoading && blogs.length === 0 && (
+          {data?.length === 0 && !isLoading && blogs[0].length === 0 && (
             <div className="">
               <p className="text-xl tracking-wider font-semibold">Oops! Looks like there are no posts at the moment.</p>
             </div>

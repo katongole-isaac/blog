@@ -44,4 +44,4 @@ export type BlogMetadata = Pick<BlogMetaData, "title" | "description" | "tags" |
  * `published` -Blog post is ready and is live
  *
  */
-export type BlogType = "draft" | "published";
+export type BlogType = "draft" | "published" | "drafts";

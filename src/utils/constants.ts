@@ -1,11 +1,14 @@
-export const DEFAULT_IMAGE = "/images/default.png";
+const DEFAULT_IMAGE = "/images/default.png";
 /**Default category for uncategorized blogs */
-export const DEFAULT_CATEGORY = "Uncategory";
+const DEFAULT_CATEGORY = "Uncategory";
 
-export const SITE_NAME = "Isaac Codes";
-export const SITE_CREATOR = "Katongole Isaac";
+const SITE_NAME = "Isaac Codes";
+const SITE_CREATOR = "Katongole Isaac";
 
-export const BLOG_GUIDE_MARKDOWN = `
+/**Key used in storing when the visibility change was last updated */
+const visibilityKey = "visibilityLastUpdate";
+
+const BLOG_GUIDE_MARKDOWN = `
 
 > Every blog post **must** have a [front-matter](https://www.google.com/search?client=ubuntu&channel=fs&q=front-matter) section as shown above.
 >
@@ -38,3 +41,12 @@ export const BLOG_GUIDE_MARKDOWN = `
 > Write your content here
 > \`\`\`
 `;
+
+export default {
+  DEFAULT_CATEGORY,
+  DEFAULT_IMAGE,
+  SITE_NAME,
+  SITE_CREATOR,
+  visibilityKey,
+  BLOG_GUIDE_MARKDOWN
+};

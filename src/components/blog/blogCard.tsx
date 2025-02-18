@@ -1,17 +1,17 @@
 import Link from "next/link";
+import grayMatter from "gray-matter";
 import Image from "next/legacy/image";
+import { useQuery } from "@tanstack/react-query";
+import { ListBlobResultBlob } from "@vercel/blob";
+import { useCallback, useEffect, useState } from "react";
 import { sendGTMEvent } from "@next/third-parties/google";
 
-import { cn } from "@/lib/utils";
-import config from "@/config/default.json";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DEFAULT_CATEGORY, DEFAULT_IMAGE } from "@/utils/constants";
-import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
-import { ListBlobResultBlob } from "@vercel/blob";
-import grayMatter from "gray-matter";
-import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useState } from "react";
 import utils from "@/utils";
+import { cn } from "@/lib/utils";
+import constants from "@/utils/constants";
+import config from "@/config/default.json";
+import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Props {
   blog: ListBlobResultBlob;
@@ -20,7 +20,7 @@ interface Props {
 type CardProps = React.ComponentProps<typeof Card> & { size?: "sm" | "lg" };
 
 export const fetchBlogContent = (url: string) =>
-  utils.fetchWithTimeout(url).then(async (res) => {
+  utils.fetchWithTimeout(url, { cache: "no-cache" }).then(async (res) => {
     if (!res.ok) {
       const error = await res.json();
       throw new Error((error as Error).message ?? "Something went wrong while fetching Blog content");
@@ -41,7 +41,7 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
   const blogURL = `${config.blogBaseURL}/${blogUrl}`;
 
   const showCategory = useCallback(() => {
-    if (matter) return matter.data.tags[0].trim() ?? DEFAULT_CATEGORY;
+    if (matter) return matter.data.tags[0].trim() ?? constants.DEFAULT_CATEGORY;
   }, [matter]);
 
   const { data, error, isLoading } = useQuery({
@@ -75,7 +75,7 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
         >
           <div className={cn("min-h-48 relative border-r border-gray-50 dark:border-neutral-800")}>
             <Image
-              src={matter.data.image || DEFAULT_IMAGE}
+              src={matter.data.image || constants.DEFAULT_IMAGE}
               alt={matter.data.title}
               layout="fill"
               objectFit="cover"
@@ -107,7 +107,7 @@ export default function BlogCard({ className, blog, size = "sm", ...props }: Car
       >
         <div className={cn("min-h-48 relative border-b border-gray-50 dark:border-neutral-800")}>
           <Image
-            src={matter.data.image || DEFAULT_IMAGE}
+            src={matter.data.image || constants.DEFAULT_IMAGE}
             alt={matter.data.title}
             layout="fill"
             objectFit="cover"

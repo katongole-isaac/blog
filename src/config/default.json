@@ -1,7 +1,11 @@
 {
-  "getPosts": "/api/blogs",
-  "getPost": "/api/blogs",
   "blogBaseURL": "/b",
+  "getPost": "/api/blogs",
+  "getPosts": "/api/blogs",
+  "login": "/api/auth/login",
+  "logout": "/api/auth/logout",
+  "draftBlogBaseURL": "/d/drafts",
+  "blogUploads": "/api/blogs/uploads",
   "blogMetadata": "/api/blogs/metadata",
-  "blogUploads": "/api/blogs/uploads"
+  "checkAuthenticated": "/api/auth/me"
 }

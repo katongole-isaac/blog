@@ -2,14 +2,14 @@
 
 import { useRef } from "react";
 import { Provider } from "react-redux";
-import makeStore, { AppStore } from "./";
+import appStore, { AppStore } from "./";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 
 const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const store = useRef<AppStore>(null);
 
-  if (!store.current) store.current = makeStore();
+  if (!store.current) store.current = appStore;
 
   return (
     <Provider store={store.current}>

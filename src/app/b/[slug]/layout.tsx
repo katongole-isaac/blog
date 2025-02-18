@@ -2,10 +2,10 @@ import { Metadata } from "next";
 
 import utils from "@/utils";
 import BlogLayout from "./blogLayout";
+import constants from "@/utils/constants";
 import config from "@/config/default.json";
 import Footer from "@/components/common/footer";
 import { type BlogMetadata } from "@/utils/types";
-import { SITE_CREATOR, SITE_NAME } from "@/utils/constants";
 
 interface Props {
   children: React.ReactNode;
@@ -58,14 +58,14 @@ export async function generateMetadata({ params }: IMetadata): Promise<Metadata>
         "max-snippet": -1,
       },
     },
-    creator: SITE_CREATOR,
+    creator: constants.SITE_CREATOR,
 
     openGraph: {
       url: baseURL,
       publishedTime,
       type: "article",
       title: data.title,
-      siteName: SITE_NAME,
+      siteName: constants.SITE_NAME,
       description: data.description,
       images: [
         {

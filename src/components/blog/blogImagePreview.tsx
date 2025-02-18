@@ -1,7 +1,8 @@
 import NextImage from "next/legacy/image";
 import React, { useEffect, useRef } from "react";
+
+import constants from "@/utils/constants";
 import { Button } from "@/components/ui/button";
-import { DEFAULT_IMAGE } from "@/utils/constants";
 import { useAppContext } from "@/context/appContext";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -11,7 +12,7 @@ interface Props {
 
 const BlogImagePreview: React.FC<Props> = ({ onClose }) => {
   const { imagePreviewOpen, imagePreviewURL } = useAppContext();
-  const imageURL = imagePreviewURL?.trim() ? imagePreviewURL : DEFAULT_IMAGE;
+  const imageURL = imagePreviewURL?.trim() ? imagePreviewURL : constants.DEFAULT_IMAGE;
 
   const ref = useRef<HTMLDivElement>(null);
 

@@ -1,8 +1,8 @@
 import Image from "next/legacy/image";
 
 import SocialMediaLinks from "./socials";
+import constants from "@/utils/constants";
 import useBlogTimeFormat from "@/hooks/useBlogTimeFormat";
-import { DEFAULT_CATEGORY, DEFAULT_IMAGE } from "@/utils/constants";
 
 interface Props {
   metadata: { [x: string]: any };
@@ -10,7 +10,7 @@ interface Props {
 }
 const BlogHeader: React.FC<Props> = ({ metadata, uploadedAt }) => {
   const { formattedTime } = useBlogTimeFormat(uploadedAt);
-  const blogCategory = metadata.tags[0] ?? DEFAULT_CATEGORY;
+  const blogCategory = metadata.tags[0] ?? constants.DEFAULT_CATEGORY;
 
   return (
     <>
@@ -38,7 +38,7 @@ const BlogHeader: React.FC<Props> = ({ metadata, uploadedAt }) => {
           <div className="mt-8">
             <div className="w-full h-52 md:h-80 relative">
               <Image
-                src={metadata.image || DEFAULT_IMAGE}
+                src={metadata.image || constants.DEFAULT_IMAGE}
                 alt={metadata.title}
                 layout="fill"
                 objectFit="cover"

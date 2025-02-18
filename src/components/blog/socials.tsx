@@ -36,7 +36,7 @@ const SocialMediaLinks: React.FC<Props> = ({ preview = false }) => {
         <div className="flex justify-center gap-4 text-neutral-500 [&>*]:cursor-pointer hover:[&_svg]:text-neutral-700 dark:hover:[&_svg]:text-neutral-400 duration-200 transition-all">
           <FaFacebook size={iconSize} />
           <FaXTwitter size={iconSize} />
-          <LinkIcon className="dark:text-white text-black" size={iconSize} />
+          <LinkIcon className="text-neutral-500" size={iconSize} />
         </div>
       </section>
     );
@@ -48,10 +48,10 @@ const SocialMediaLinks: React.FC<Props> = ({ preview = false }) => {
         <Link href={`https://www.facebook.com/sharer/sharer.php?u=${blogURL}`} target="_blank" rel="noopener noreferrer">
           <FaFacebook size={iconSize} />
         </Link>
-        <Link href={`https://x.com/intent/tweet?text=Check+out+this+post!&url=${blogURL}`} target="_blank" rel="noopener noreferrer">
+        <Link href={`https://x.com/intent/tweet?text=Check+out+this+post!&url=${blogURL}`} className="twitter-share-button" target="_blank" rel="noopener noreferrer">
           <FaXTwitter size={iconSize} />
         </Link>
-        <LinkIcon className="dark:text-white text-black" size={iconSize} onClick={() => handleCopyLink()} />
+        <LinkIcon className="dark:text-white text-black " size={iconSize} onClick={() => handleCopyLink()} />
       </div>
     </section>
   );

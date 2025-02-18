@@ -6,7 +6,10 @@ import { ChevronDown } from "lucide-react";
 import AppLogo from "../common/logo";
 import { useRouter } from "next/navigation";
 
-export default function Navbar() {
+interface Props {
+  size?: "lg" | "xl" | "xxl";
+}
+export default function Navbar({ size = "lg" }: Props) {
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
   const iconSize = 30;
   const ref = useRef<HTMLDivElement>(null);
@@ -42,6 +45,12 @@ export default function Navbar() {
     };
   }, [openMobileMenu]);
 
+  const sizes = {
+    lg: "max-w-screen-lg",
+    xl: "max-w-screen-xl",
+    xxl: "max-w-screen-2xl",
+  };
+
   return (
     <>
       <nav
@@ -49,10 +58,9 @@ export default function Navbar() {
           openMobileMenu ? "bg-[#FAFAFC]" : "bg-gray-100/60 backdrop-blur filter"
         }  dark:bg-neutral-900 fixed w-full top-0 z-[100]`}
       >
-        <div className=" max-w-screen-lg m-auto flex items-center justify-between  px-3 md:px-5 lg:px-0">
+        <div className={` ${sizes[size!]} m-auto flex items-center justify-between  px-3 md:px-5 lg:px-0`}>
           {/* logo */}
           <div className="relative h-10 w-40 md:w-48">
-            
             <AppLogo className="cursor-pointer" role="link" onClick={() => router.push(homePage)} />
           </div>
 

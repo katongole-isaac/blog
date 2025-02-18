@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
+import { createStateSyncMiddleware, initMessageListener, Config } from "redux-state-sync";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 
@@ -24,21 +25,33 @@ const storage = typeof window !== "undefined" ? createWebStorage("local") : crea
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["blogs", "editor"],
+  whitelist: ["blogs", "editor", "tabs"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
 const ignoredActions = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
+// redux-state-sync
+const reduxStateSyncConfig: Config = {
+  channel: "redux_broadcast_channel",
+  blacklist: [...ignoredActions, "editor/editorChangesSaved"],
+};
+
 const makeStore = () =>
   configureStore({
     reducer: persistedReducer,
     devTools: process.env.NODE_ENV !== "production",
-    middleware: (gDM) => gDM({ serializableCheck: { ignoredActions } }),
+
+    //@ts-ignore
+    middleware: (gDM) => gDM({ serializableCheck: { ignoredActions } }).concat(createStateSyncMiddleware(reduxStateSyncConfig)),
   });
 
-export default makeStore;
+const store = makeStore();
+
+initMessageListener(store);
+
+export default store;
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;

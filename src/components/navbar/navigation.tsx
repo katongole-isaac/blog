@@ -1,5 +1,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import ThemeSwitch, { MobileThemeSwitch } from "../theme/themeSwitch";
+import useAuth from "@/hooks/use-auth";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import config from "@/config/default.json";
+import AuthenticatedNavbar from "@/app/d/components/authenticatedNavbar";
+import useShortcut from "@/hooks/use-shortcut";
+import Link from "next/link";
 
 interface Props {
   mobile?: boolean;
@@ -7,11 +14,33 @@ interface Props {
 
 //  main nav
 const AppNavigation = () => {
+  const router = useRouter();
+  const isAuthenticated = useAuth();
+
+  const goToLogin = () => router.push("/login");
+  const handleLogout = () => fetch(config.logout).then((res) => router.replace("/"));
+
+  const handleGoToDashboard = () => router.push("/d");
+
+  useShortcut("q", handleLogout);
+  useShortcut("k", handleGoToDashboard);
+
   return (
     <div>
-      <ul className="hidden md:flex gap-2">
+      <ul className="hidden md:flex items-center gap-3">
         <li>
-          <ThemeSwitch />
+          {isAuthenticated === null ? (
+            <small>Loading...</small>
+          ) : isAuthenticated ? (
+            <AuthenticatedNavbar onLogout={handleLogout} onGoToDashboard={handleGoToDashboard} />
+          ) : (
+            <div className="flex gap-3">
+              <Button size="sm" onClick={goToLogin}>
+                Login
+              </Button>
+              <ThemeSwitch />
+            </div>
+          )}
         </li>
       </ul>
     </div>
@@ -38,6 +67,9 @@ export const MobileNavigation: React.FC<Props> = ({ mobile = false }) => {
           >
             <li>
               <MobileThemeSwitch mobileMenuOpen={mobile} />
+            </li>
+            <li>
+              <Link href="/login">Login</Link>
             </li>
           </motion.ul>
         </motion.div>

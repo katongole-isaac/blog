@@ -6,10 +6,11 @@ import { useCallback, useEffect, useState } from "react";
 import BlogHeader from "@/components/blog/header";
 import { BlogError } from "@/components/common/error";
 import BlogLoading from "@/components/blog/blogLoading";
+import ProgressBar from "@/components/common/progressBar";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchBlogById, getBlogState, getProcessedBlogs } from "@/store/blogSlice";
 import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownParse";
-import ProgressBar from "@/components/common/progressBar";
+import NextBlogButton from "./components/blogNav";
 
 const BlogPage = () => {
   const { slug }: { slug: string } = useParams();
@@ -26,15 +27,16 @@ const BlogPage = () => {
   const renderHtml = useCallback(async () => {
     const _html = await renderMarkdownToHtml(blog?.matter?.content!);
     setHtml(_html);
-  }, [blog]);
+  }, [blog, processedBlogs]);
 
   useEffect(() => {
     if (blog) renderHtml();
   }, [blog]);
 
   useEffect(() => {
-    if (processedBlogs.length == 0 || !blog) dispatch(fetchBlogById({ blogType: "published", slug }));
-  }, [blog]);
+    // do some refresh in case the blog post is modified
+    dispatch(fetchBlogById({ blogType: "published", slug }));
+  }, []);
 
   if (error && error?.cause?.status === 404) return notFound();
 
@@ -46,6 +48,7 @@ const BlogPage = () => {
       {isLoading && !blog && <BlogLoading />}
       {blog && <BlogHeader metadata={blog.matter.data} uploadedAt={blog.uploadedAt as string} />}
       {html && processHTML(html)}
+      <NextBlogButton slug={slug} />
     </div>
   );
 };

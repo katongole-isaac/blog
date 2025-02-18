@@ -2,6 +2,7 @@
 
 import Image from "next/legacy/image";
 import { useTheme } from "next-themes";
+
 import LogoIcon from "@/assets/logos/icon-logo.png";
 import LogoIconWhite from "@/assets/logos/icon-logo-white.png";
 
