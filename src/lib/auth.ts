@@ -1,13 +1,32 @@
-import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify, JWTPayload } from "jose";
 
-const hashpassword = (password: string) => {
-  const hash = bcrypt.hashSync(password, 10);
-  return hash;
+const hashPassword = async (password: string, salt: string) => {
+  const encoder = new TextEncoder();
+
+  const keyMaterial = await crypto.subtle.importKey("raw", encoder.encode(password), { name: "PBKDF2" }, false, ["deriveBits"]);
+
+  const iterations = 100_000; // Adjust for security/performance
+  const derivedKey = await crypto.subtle.deriveBits(
+    {
+      name: "PBKDF2",
+      hash: "SHA-256",
+      salt: encoder.encode(salt),
+      iterations,
+    },
+    keyMaterial,
+    256 // 256-bit derived key
+  );
+
+  return btoa(String.fromCharCode(...new Uint8Array(derivedKey))); // Convert to base64
 };
 
-if (!process.env.APP_SECRET_KEY || !process.env.LOGIN_USERNAME || !process.env.LOGIN_PASSWORD)
-  throw new Error("Please set the environment variables APP_SECRET_KEY, LOGIN_USERNAME, and LOGIN_PASSWORD before starting the app.");
+const verifyPassword = async (inputPassword: string, storedHash: string, salt: string) => {
+  const inputHash = await hashPassword(inputPassword, salt);
+  return inputHash === storedHash;
+};
+
+if (!process.env.APP_SECRET_KEY || !process.env.LOGIN_USERNAME || !process.env.LOGIN_PASSWORD || !process.env.APP_SLT)
+  throw new Error("Please set the environment variables APP_SECRET_KEY, LOGIN_USERNAME, LOGIN_PASSWORD and APP_SLT before starting the app.");
 
 // Convert your secret key to a format `jose` can use
 const secret = new TextEncoder().encode(process.env.APP_SECRET_KEY!);
@@ -33,5 +52,6 @@ async function verifyToken(token: string) {
 export default {
   verifyToken,
   generateToken,
-  hashpassword,
+  hashPassword,
+  verifyPassword,
 };

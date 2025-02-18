@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,14 +9,16 @@ const user = {
   passwordHash: process.env.LOGIN_PASSWORD!,
 };
 
+const salt = process.env.APP_SLT!;
+
 const _POST = async (req: NextRequest) => {
   try {
     const { username, password } = await req.json();
 
-    const isValidUsername = await bcrypt.compare(username, user.username);
+    const isValidUsername = await auth.verifyPassword(username, user.username, salt);
     if (!isValidUsername) return NextResponse.json({ message: "Invalid username or password" }, { status: 401 });
 
-    const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+    const isValidPassword = await auth.verifyPassword(password, user.passwordHash, salt);
     if (!isValidPassword) return NextResponse.json({ message: "Invalid username or password" }, { status: 401 });
 
     // Generate JWT token
