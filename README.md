@@ -74,14 +74,74 @@ But if you don't have, feel free to shoot me an [email](mailto:katongolelsaac78@
 
 **What you can change**
 
+- Timezone used to refernce the time for blog posts (defaults to `Africa/Kampala`)
+- Domain to be used (you can supply yours in `.env.production` file)
 - Google Analytics ID (supply yours in `.env` file)
 - App logo and app name
 - Anything you feel like as long as you're comfortable with reactjs and Nextjs in particular.
 
 ## Deployments
 
-- **Vercel**  
-  It shouldn't be difficult to deploy this project on vercel. All you have to is to fork or clone this repository to your github account and connect vercel to the created repo.
+### Docker
+
+When using Docker, you need to clone this repository and build your own version of the image with your configurations.  
+I have included guidelines in the docker files to guide you through when creating an image but i will also reference them here.
+
+- **How to build your docker image**
+  > I assume that you're using docker compose for building your image
+
+clone this repository
+
+```sh
+git clone https://github.com/katongole-isaac/blog
+```
+
+Navigate to blog direcory
+
+```sh
+cd blog
+```
+
+**Buiilding docker image**
+
+<small>you need to provide your own values for these environment variables </small>
+
+> NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID='' # optional  
+> NEXT_PUBLIC_BASE_URL=''  
+> NEXT_PUBLIC_TIMEZONE=''
+
+```sh
+docker compose -f dev.docker-compose.yml build
+```
+
+**Test your image locally**
+
+> NOTE: You need to provide values for the environment variables in `docker-compose.yml`
+
+> To create credentials, you can use a credentials-cli tool. [Download](https://github.com/katongole-isaac/blog/releases/tag/v0.1)
+
+> To obtain the BLOB_READ_WRITE_TOKEN, navigate to your Vercel Dashboard and retrieve the value from your account settings.
+
+> once you have all the values, you can create a file named `.env.local` and paste all the environment variables.
+>
+> Forexample
+>
+> `.env.local` file  
+> BLOB_READ_WRITE_TOKEN=your_vercel_token  
+> ..other values here
+
+> After all the above run the following command
+
+```sh
+docker compose --env-file .env.local up -d
+```
+
+**Publish your image to registry**  
+After testing everything locally, you can publish your image to any public registry of your choice. _I recommend [docker hub](https://hub.docker.com/)_ then you reference your image in `docker-compose.yml` file
+
+### Vercel
+
+It shouldn't be difficult to deploy this project on vercel. All you have to is to fork or clone this repository to your github account and connect vercel to the created repo.
 
 > Don't forget to create your [credentials](#create-your-credentials) and setup the required environment variables in your deployment enviroment.
 
