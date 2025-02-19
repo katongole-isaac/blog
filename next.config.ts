@@ -2,6 +2,7 @@ import { type NextConfig } from "next";
 import config from "@/config/default.json";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   images: {
     remotePatterns: [
       {

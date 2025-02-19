@@ -25,9 +25,6 @@ const verifyPassword = async (inputPassword: string, storedHash: string, salt: s
   return inputHash === storedHash;
 };
 
-if (!process.env.APP_SECRET_KEY || !process.env.LOGIN_USERNAME || !process.env.LOGIN_PASSWORD || !process.env.APP_SLT)
-  throw new Error("Please set the environment variables APP_SECRET_KEY, LOGIN_USERNAME, LOGIN_PASSWORD and APP_SLT before starting the app.");
-
 // Convert your secret key to a format `jose` can use
 const secret = new TextEncoder().encode(process.env.APP_SECRET_KEY!);
 
@@ -49,9 +46,28 @@ async function verifyToken(token: string) {
   }
 }
 
+const validateEnvVariables = () => {
+  if (
+    !process.env.APP_SECRET_KEY ||
+    !process.env.LOGIN_USERNAME ||
+    !process.env.LOGIN_PASSWORD ||
+    !process.env.APP_SLT ||
+    !process.env.BLOB_READ_WRITE_TOKEN
+  )
+    throw new Error(`
+    Please set the environment variables APP_SECRET_KEY, LOGIN_USERNAME, LOGIN_PASSWORD and APP_SLT before starting the app.
+
+    Download the credentials-cli tool to get credentials here https://github.com/katongole-isaac/blog/releases/tag/v0.1
+
+    Go to vercel dashboard under your project to obtain the value of BLOB_READ_WRITE_TOKEN  env variable.
+
+`);
+};
+
 export default {
   verifyToken,
   generateToken,
   hashPassword,
   verifyPassword,
+  validateEnvVariables,
 };

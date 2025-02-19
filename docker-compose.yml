@@ -1,0 +1,20 @@
+services:
+  app:
+    image: next-app:v1.0 # path to your remote docker image forexample username/repo/image:v1.0
+    ports:
+      - 3000:3000 # you're free to use any port here
+    container_name: next-app
+
+    healthcheck:
+      test: ["CMD", "nc", "-zv", "next-app", "3000"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+    environment:
+      - APP_SLT=${APP_SLT}
+      - LOGIN_PASSWORD=${LOGIN_PASSWORD}
+      - LOGIN_USERNAME=${LOGIN_USERNAME}
+      - APP_SECRET_KEY=${APP_SECRET_KEY}
+      - BLOB_READ_WRITE_TOKEN=${BLOB_READ_WRITE_TOKEN}

@@ -12,6 +12,7 @@ const user = {
 const salt = process.env.APP_SLT!;
 
 const _POST = async (req: NextRequest) => {
+  auth.validateEnvVariables();
   try {
     const { username, password } = await req.json();
 

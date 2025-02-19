@@ -1,0 +1,13 @@
+services:
+  next-app:
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID='' # Your google tag managaer if you wish to track or use google analytics
+        - NEXT_PUBLIC_BASE_URL='' # your domain in this format https://my-domain.com
+        - NEXT_PUBLIC_TIMEZONE='' # Timezone for the blogs date and time, You can get your timezone here https://momentjs.com/timezone/
+        
+    container_name: frontend
+    image: next-app:v1.0
+    ports:
+      - 3000:3000

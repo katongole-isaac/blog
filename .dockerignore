@@ -1,0 +1,13 @@
+# Node modules
+node_modules/
+
+# Binary files
+bin/
+
+# Git 
+.git
+
+# Environment Variables
+.env*.local
+
+.DS_Store

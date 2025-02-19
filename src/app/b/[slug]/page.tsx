@@ -2,15 +2,16 @@
 
 import { notFound, useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 import BlogHeader from "@/components/blog/header";
+import NextBlogButton from "./components/blogNav";
 import { BlogError } from "@/components/common/error";
 import BlogLoading from "@/components/blog/blogLoading";
 import ProgressBar from "@/components/common/progressBar";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchBlogById, getBlogState, getProcessedBlogs } from "@/store/blogSlice";
 import renderMarkdownToHtml, { processHTML } from "@/components/blog/markdownParse";
-import NextBlogButton from "./components/blogNav";
 
 const BlogPage = () => {
   const { slug }: { slug: string } = useParams();
@@ -42,8 +43,10 @@ const BlogPage = () => {
 
   if (error) return <BlogError error={error} />;
 
+  const googleTagID = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID;
   return (
     <div className="">
+      {googleTagID && <GoogleTagManager gtmId={googleTagID} />}
       {isLoading && blog && <ProgressBar />}
       {isLoading && !blog && <BlogLoading />}
       {blog && <BlogHeader metadata={blog.matter.data} uploadedAt={blog.uploadedAt as string} />}

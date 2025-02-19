@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { GoogleTagManager } from "@next/third-parties/google";
-import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "react-hot-toast";
-import { TooltipProvider } from "@/components/ui/tooltip";
+
 import StoreProvider from "@/store/provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme/theme-provider";
+
 import "./globals.css";
 
 // import dynamic from "next/dynamic";
@@ -26,11 +27,9 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const googleTagID = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID;
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        {googleTagID && <GoogleTagManager gtmId={googleTagID} />}
         <head>
           {/* Standard favicon */}
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
