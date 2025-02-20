@@ -76,7 +76,7 @@ const replace = (domNode: DOMNode) => {
       if (domNode.attribs["data-type"] === "page-link")
         // these are links with hash, not external links
         return (
-          <Link href={href} className="hover:text-blue-500 hover:underline text-blue-400" scroll>
+          <Link href={href} className="hover:text-blue-600 hover:underline text-blue-500" scroll>
             {
               //@ts-ignore
               domToReact(domNode.children)
@@ -84,7 +84,7 @@ const replace = (domNode: DOMNode) => {
           </Link>
         );
       return (
-        <Link href={href} className="hover:text-blue-500 hover:underline text-blue-400" scroll>
+        <Link href={href} className="hover:text-blue-600 hover:underline text-blue-500" scroll>
           {
             //@ts-ignore
             domToReact(domNode.children)
@@ -116,7 +116,7 @@ renderer.heading = ({ depth, text, type }) => {
   // <a href=${id}  data-type="page-link" class="text-inherit">  ${text} <span class="hidden group-hover:inline" >#</span> </a>
 
   return `
-  <h${depth} id=${id} class="${formatting[depth as keyof typeof formatting]} mt-8 mb-5 group" >
+  <h${depth} id=${id} class="${formatting[depth as keyof typeof formatting]}  group" >
     ${text}
   </h${depth}>
   `;
@@ -128,8 +128,8 @@ renderer.list = function (this, tokens) {
     ol: "list-decimal",
     ul: "list-disc ",
   };
-  const list_str = tokens.items.map((t) => `<li class=""> ${this.parser.parse(t.tokens).replace(/<\/li>,<li>/g, "<li></li>")}</li>`);
-  return `<${tag} class="${classes[tag]} space-y-3 pl-3 [&_ul]:list-[circle] [&_p]:p-0 [&_p]:m-0 mt-3 mb-5 " start=${tokens.start} > ${list_str
+  const list_str = tokens.items.map((t) => `<li> ${this.parser.parse(t.tokens).replace(/<\/li>,<li>/g, "<li></li>")}</li>`);
+  return `<${tag} class="${classes[tag]} space-y pl-3 [&_ul]:list-[circle] [&_p]:p-0 [&_p]:m-0 mt-3 mb-5 " start=${tokens.start} > ${list_str
     .map((list) => list)
     .join(" ")}  </${tag}>`;
 };
@@ -151,7 +151,7 @@ renderer.codespan = function (this, token) {
 };
 
 renderer.paragraph = function (this, token) {
-  return `<p class=" mb-4 leading-7">${this.parser.parseInline(token.tokens)}</p>`;
+  return `<p class="leading-7">${this.parser.parseInline(token.tokens)}</p>`;
 };
 renderer.hr = (token) => `<${token.type} class="my-12 border border-gray-200 dark:border-neutral-800" />`;
 renderer.strong = ({ text, type }) => `<${type} class="font-semibold">${text}</${type}>`;

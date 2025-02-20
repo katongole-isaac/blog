@@ -1,6 +1,6 @@
 "use client";
 
-import {  useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, useScroll } from "framer-motion";
 
@@ -42,7 +42,7 @@ export default function BlogLayout({ children }: Props): React.JSX.Element {
           <AnimatePresence>{imagePreview.open && <BlogImagePreview onClose={closeImagePreview} />}</AnimatePresence>
           <Navbar />
           <BlogScrollProgress scrollYProgress={scrollYProgress} />
-          <section className=" max-w-screen-md m-auto py-10 font-apple prose dark:prose-invert  prose-headings:font-medium prose-blockquote:border-0 prose-pre:bg-transparent prose-pre:p-0 prose-h1:mb-0 prose-a:no-underline ">
+          <section className=" max-w-screen-md m-auto py-10 font-apple prose dark:prose-invert  prose-headings:font-semibold prose-blockquote:border-0 prose-blockquote:pl-0 prose-p:my-3 prose-headings:mt-7 prose-headings:mb-5 prose-pre:bg-transparent prose-pre:my-4 prose-pre:p-0 prose-h1:mb-0 prose-a:no-underline ">
             <section className="px-10 md:px-14">{children}</section>
           </section>
         </AppContext.Provider>
@@ -50,4 +50,3 @@ export default function BlogLayout({ children }: Props): React.JSX.Element {
     </div>
   );
 }
-

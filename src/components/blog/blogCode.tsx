@@ -38,7 +38,7 @@ const Code: React.FC<ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement>>
   }, [isCopied]);
 
   return (
-    <div className=" relative rounded-md my-2 dark:border-0 border border-neutral-200 shadow-sm">
+    <div className=" relative rounded-md dark:border-0  shadow-sm">
       <div className="sticky top-0 z-30 flex justify-end pr-3">
         <div className="absolute top-1 md:top-3 ">
           <Button
